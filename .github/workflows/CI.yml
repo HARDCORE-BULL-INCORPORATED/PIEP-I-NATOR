@@ -59,7 +59,7 @@ jobs:
 
   release:
     name: Publish dev version to DockerHub
-    if: ${{ github.ref == 'refs/heads/main' }}
+    if: ${{ github.ref == 'refs/heads/main' && github.repository == 'hmes98318/Music-Disc' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

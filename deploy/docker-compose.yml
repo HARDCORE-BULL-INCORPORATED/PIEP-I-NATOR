@@ -1,0 +1,20 @@
+services:
+  music-disc:
+    image: ghcr.io/varjovaras/music-disc:latest
+    container_name: music-disc
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./application.yml:/bot/server/application.yml   # Lavalink config
+      - ./data:/bot/data                                # Bot SQLite database (playlists, queue persistence)
+      - ./logs:/bot/logs                                # Bot logs
+      - ./lavalink/plugins:/bot/server/plugins          # Lavalink plugins
+      - ./lavalink/logs:/bot/server/logs                # Lavalink logs
+    ports:
+      - "33333:33333"                                   # Web dashboard
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
