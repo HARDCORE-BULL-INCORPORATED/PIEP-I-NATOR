@@ -1,6 +1,6 @@
 import { connected, dashboard, disconnect } from './dashboard.embed.js';
 import { blacklist, blacklistList } from './blacklist.embed.js';
-import { filterMsg, help, textMsg, textErrorMsg, textSuccessMsg, textWarningMsg } from './msg.embed.js';
+import { filterMsg, help, helpList, textMsg, textErrorMsg, textSuccessMsg, textWarningMsg } from './msg.embed.js';
 import { ping } from './ping.embed.js';
 import {
     playlistInfo,
@@ -32,6 +32,7 @@ const embeds = {
     disconnect,
     filterMsg,
     help,
+    helpList,
     maintainNotice,
     moee,
     mostPlayed,

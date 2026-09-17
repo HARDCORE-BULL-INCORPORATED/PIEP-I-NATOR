@@ -1,14 +1,7 @@
-import {
-    ActionRowBuilder,
-    ButtonInteraction,
-    Collection,
-    StringSelectMenuBuilder,
-    StringSelectMenuInteraction
-} from 'discord.js';
 import i18next from 'i18next';
 
 import { BaseCommand } from './base/BaseCommand.js';
-import { CommandCategory, SelectButtonId } from '../@types/index.js';
+import { CommandCategory } from '../@types/index.js';
 import { embeds } from '../embeds/index.js';
 
 import type { Client } from 'discord.js';
@@ -45,7 +38,7 @@ export class HelpCommand extends BaseCommand {
             : context.args.join(' ');
 
         if (!commandParam) {
-            // Show command list with select menus
+            // Show the command list
             await this.#showCommandList(bot, client, context);
         }
         else {
@@ -55,92 +48,40 @@ export class HelpCommand extends BaseCommand {
     }
 
     /**
-     * Show command list with select menus
+     * Show the list of all commands grouped by category
      * @private
      */
     async #showCommandList(bot: Bot, client: Client, context: CommandContext): Promise<void> {
-        const commands = client.commands.getHelpCommands(bot, context.language);
+        const metadata = client.commands
+            .getHelpCommands(bot, context.language)
+            .map(cmd => cmd.getMetadata(bot, context.language));
 
-        const musicCommands = commands.filter(cmd => {
-            const metadata = cmd.getMetadata(bot, context.language);
-            return metadata.category === CommandCategory.MUSIC;
-        });
-        const utilityCommands = commands.filter(cmd => {
-            const metadata = cmd.getMetadata(bot, context.language);
-            return metadata.category === CommandCategory.UTILITY;
-        });
+        const sections = Object.values(CommandCategory)
+            .map(category => ({
+                category,
+                lines: metadata
+                    .filter(entry => entry.category === category)
+                    .sort((a, b) => a.name.localeCompare(b.name))
+                    .map(entry => this.#formatCommandLine(bot.config.bot.prefix, entry))
+            }))
+            .filter(section => section.lines.length > 0);
 
-        // Build select menus
-        const musicSelect = new StringSelectMenuBuilder()
-            .setCustomId(SelectButtonId.HelpMusic)
-            .setPlaceholder(context.t('commands:HELP_SELECT_MUSIC_PLACEHOLDER'))
-            .setOptions(musicCommands.map(cmd => {
-                const metadata = cmd.getMetadata(bot, context.language);
-                const aliases = metadata.aliases && metadata.aliases.length > 0 ? metadata.aliases.join(', ') : context.t('commands:HELP_COMMAND_NONE');
-                return {
-                    label: metadata.name,
-                    description: context.t('commands:HELP_COMMAND_ALIASES', { aliases }),
-                    value: metadata.name
-                };
-            }));
-
-        const utilitySelect = new StringSelectMenuBuilder()
-            .setCustomId(SelectButtonId.HelpUtility)
-            .setPlaceholder(context.t('commands:HELP_SELECT_UTILITY_PLACEHOLDER'))
-            .setOptions(utilityCommands.map(cmd => {
-                const metadata = cmd.getMetadata(bot, context.language);
-                const aliases = metadata.aliases && metadata.aliases.length > 0 ? metadata.aliases.join(', ') : context.t('commands:HELP_COMMAND_NONE');
-                return {
-                    label: metadata.name,
-                    description: context.t('commands:HELP_COMMAND_ALIASES', { aliases }),
-                    value: metadata.name
-                };
-            }));
-
-        const musicRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(musicSelect);
-        const utilityRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(utilitySelect);
-
-        // Send message
-        const msg = await context.reply({
-            embeds: [embeds.textMsg(bot, context.t('commands:MESSAGE_HELP_SELECT_LIST'))],
-            components: [musicRow.toJSON(), utilityRow.toJSON()],
+        await context.reply({
+            embeds: [embeds.helpList(bot, sections, context.language)],
             allowedMentions: { repliedUser: false }
         });
+    }
 
-        // Create collector
-        const collector = msg.createMessageComponentCollector({
-            time: 20000, // 20s
-            filter: i => i.user.id === context.user.id
-        });
+    /**
+     * Format a command as a single overview line
+     * @private
+     */
+    #formatCommandLine(prefix: string, metadata: CommandMetadata): string {
+        const aliases = metadata.aliases.length > 0
+            ? ` (${metadata.aliases.join(', ')})`
+            : '';
 
-        collector.on('collect', async (i: StringSelectMenuInteraction) => {
-            if (i.customId !== SelectButtonId.HelpMusic && i.customId !== SelectButtonId.HelpUtility) return;
-
-            const selectedCommand = client.commands.get(i.values[0]);
-            if (!selectedCommand) return;
-
-            const metadata = selectedCommand.getMetadata(bot, context.language);
-            const usage = `${metadata.description}\n\`\`\`${bot.config.bot.prefix}${metadata.usage}\`\`\``;
-
-            await i.deferUpdate();
-            await msg.edit({
-                embeds: [embeds.help(bot, metadata.name, usage, context.language)],
-                components: [],
-                allowedMentions: { repliedUser: false }
-            }).catch(() => bot.logger.discord( bot.shardId, 'Failed to edit deleted message.'));
-
-            collector.stop();
-        });
-
-        collector.on('end', async (collected: Collection<string, ButtonInteraction>, reason: string) => {
-            if (reason === 'time' && collected.size === 0) {
-                await msg.edit({
-                    embeds: [embeds.textErrorMsg(bot, context.t('commands:ERROR_TIME_EXPIRED'))],
-                    components: [],
-                    allowedMentions: { repliedUser: false }
-                }).catch(() => bot.logger.discord( bot.shardId, 'Failed to edit deleted message.'));
-            }
-        });
+        return `**${prefix}${metadata.name}**${aliases} - ${metadata.description}`;
     }
 
     /**
