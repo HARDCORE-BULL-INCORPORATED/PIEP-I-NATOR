@@ -20,7 +20,7 @@ export class MostPlayedCommand extends BaseCommand {
     public getMetadata(_bot: Bot, lng?: string): CommandMetadata {
         return {
             name: 'mostplayed',
-            aliases: ['top'],
+            aliases: ['mp'],
             description: i18next.t('commands:CONFIG_MOST_PLAYED_DESCRIPTION', { lng }),
             usage: i18next.t('commands:CONFIG_MOST_PLAYED_USAGE', { lng }),
             category: CommandCategory.MUSIC,
