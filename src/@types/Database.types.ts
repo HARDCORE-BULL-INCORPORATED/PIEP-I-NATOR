@@ -25,3 +25,9 @@ export interface BlacklistedUserTableRow {
     user_id: string;
 }
 
+export interface TrackPlayCount {
+    title: string;
+    url: string;
+    count: number;
+}
+

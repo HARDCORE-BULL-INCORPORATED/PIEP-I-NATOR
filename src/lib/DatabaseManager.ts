@@ -133,6 +133,14 @@ export class DatabaseManager {
                 position INTEGER NOT NULL,
                 FOREIGN KEY (playlist_id) REFERENCES playlists(id) ON DELETE CASCADE
             );
+
+            CREATE TABLE IF NOT EXISTS track_play_counts (
+                guild_id TEXT NOT NULL,
+                title TEXT NOT NULL,
+                url TEXT NOT NULL,
+                count INTEGER NOT NULL DEFAULT 0,
+                PRIMARY KEY (guild_id, title, url)
+            );
         `);
 
         const columns = this.db.prepare('PRAGMA table_info(playlists)').all() as Array<{ name: string }>;

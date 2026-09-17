@@ -17,6 +17,7 @@ import { DashboardManager } from './lib/DashboardManager.js';
 import { DatabaseManager } from './lib/DatabaseManager.js';
 import { QueuePersistence } from './lib/QueuePersistence.js';
 import { PlaylistManager } from './lib/PlaylistManager.js';
+import { PlayCountManager } from './lib/PlayCountManager.js';
 import { cst } from './utils/constants.js';
 
 import type { Bot, SystemInfo } from './@types/index.js';
@@ -110,6 +111,9 @@ class App {
 
         // Initialize playlist manager
         this.bot.playlistManager = new PlaylistManager(this.bot);
+
+        // Initialize play count manager
+        this.bot.playCountManager = new PlayCountManager(this.bot);
     }
 
 

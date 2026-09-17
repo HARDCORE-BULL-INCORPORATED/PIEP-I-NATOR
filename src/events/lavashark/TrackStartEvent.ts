@@ -1,5 +1,7 @@
 import { BaseLavaSharkEvent } from './base/BaseLavaSharkEvent.js';
 import { setVoiceChannelStatus } from '../../utils/functions/setVoiceStatus.js';
+import { cleanTrackTitle } from '../../utils/functions/cleanTrackTitle.js';
+import { isRadioTrack } from '../../utils/functions/isRadioTrack.js';
 
 import type { Client } from 'discord.js';
 import type { Player } from 'lavashark';
@@ -24,6 +26,12 @@ export class TrackStartEvent extends BaseLavaSharkEvent<'trackStart'> {
 
         const track = player.current;
         if (!track) return;
+
+        // Count the play before the dashboard reads the updated count
+        if (!isRadioTrack(track)) {
+            bot.playCountManager?.recordPlay(player.guildId, track.title, track.uri);
+        }
+
         await client.dashboard.update(player, track);
 
         // Set voice channel status with track info
@@ -44,31 +52,6 @@ export class TrackStartEvent extends BaseLavaSharkEvent<'trackStart'> {
     }
 
     /**
-     * Strip common YouTube title noise such as "[OFFICIAL VIDEO]",
-     * "(Official Audio)", "(Lyrics)", quality tags like "[HD]", and
-     * trailing separator fragments left after removal.
-     */
-    #cleanTitle(text: string): string {
-        // Remove bracketed/parenthesized tags: official, music, lyric, hd, hq, 4k, video, audio, lyrics
-        const tagPattern = /[\[\(]\s*(?:official\s*)?(?:music\s*)?(?:hd\s*|hq\s*|4k\s*)?(?:lyric\s*)?(?:video|audio|lyrics?)(?:\s*(?:hd|hq|4k))?\s*[\]\)]/gi;
-        let cleaned = text.replace(tagPattern, '');
-
-        // Remove standalone quality tags: [HD], [HQ], [4K], (HD), (HQ), (4K)
-        cleaned = cleaned.replace(/[\[\(]\s*(?:hd|hq|4k)\s*[\]\)]/gi, '');
-
-        // Remove "(Audio Only)" and similar patterns
-        cleaned = cleaned.replace(/[\[\(]\s*audio\s*only\s*[\]\)]/gi, '');
-
-        // Remove trailing "| Official Video", "- Official Audio", etc.
-        cleaned = cleaned.replace(/\s*[|\-]\s*official\s*(?:music\s*)?(?:hd\s*)?(?:lyric\s*)?(?:video|audio|lyrics?)\s*$/i, '');
-
-        // Trim leftover trailing separators and whitespace
-        cleaned = cleaned.replace(/[\s\-|]+$/, '').trim();
-
-        return cleaned || text.trim();
-    }
-
-    /**
      * Format voice channel status text with author and title.
      * Shows "Author - Title" when the author is available and meaningful,
      * otherwise just the title. Truncates to fit voice status limits.
@@ -76,8 +59,8 @@ export class TrackStartEvent extends BaseLavaSharkEvent<'trackStart'> {
     #formatVoiceStatus(author: string | undefined, title: string): string {
         const MAX_LENGTH = 80;
 
-        const cleanedTitle = this.#cleanTitle(title);
-        const cleanedAuthor = author ? this.#cleanTitle(author) : author;
+        const cleanedTitle = cleanTrackTitle(title);
+        const cleanedAuthor = author ? cleanTrackTitle(author) : author;
 
         const hasAuthor = cleanedAuthor
             && cleanedAuthor.trim() !== ''

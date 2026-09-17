@@ -252,6 +252,12 @@ export class DashboardManager {
             lng
         });
 
+        // Add how many times this song has been played in this guild
+        const playCount = this.#bot.playCountManager?.getCount(player.guildId, track.title, track.uri) ?? 0;
+        if (playCount > 0) {
+            subtitle += this.#bot.i18n.t('embeds:DASHBOARD_PLAY_COUNT', { count: playCount, lng });
+        }
+
         // Add requester info
         const requesterId = track.requester?.id;
         if (requesterId) {

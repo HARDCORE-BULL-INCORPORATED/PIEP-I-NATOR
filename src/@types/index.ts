@@ -19,6 +19,7 @@ import type { QueuePersistence } from '../lib/QueuePersistence.js';
 import type { CommandRegistry } from '../commands/base/CommandRegistry.js';
 import type { IPBlockerConfig, SessionManagerConfig } from './SessionManager.types.js';
 import type { PlaylistManager } from '../lib/PlaylistManager.js';
+import type { PlayCountManager } from '../lib/PlayCountManager.js';
 
 export * from './ButtonIds.types.js';
 export * from './BaseCommand.types.js';
@@ -109,6 +110,7 @@ export type Bot = {
     guildLanguageManager?: GuildLanguageManager;
     guildVolumeManager?: GuildVolumeManager;
     playlistManager?: PlaylistManager;
+    playCountManager?: PlayCountManager;
 }
 
 /**
