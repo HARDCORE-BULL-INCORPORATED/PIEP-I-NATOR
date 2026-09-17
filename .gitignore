@@ -4,6 +4,10 @@ logs/
 
 .env
 
+deploy/application.yml
+deploy/data/
+deploy/lavalink/
+
 server/logs/
 server/plugins/
 server/*.jar

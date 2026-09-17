@@ -1,6 +1,8 @@
 services:
   music-disc:
-    image: ghcr.io/varjovaras/music-disc:latest
+    build:
+      context: ..
+      dockerfile: Dockerfile
     container_name: music-disc
     restart: always
     env_file:
