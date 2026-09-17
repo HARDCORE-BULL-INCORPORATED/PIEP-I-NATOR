@@ -1,4 +1,11 @@
 /**
+ * Example bot configuration.
+ *
+ * Copy this file to config.js before running the bot:
+ *     cp config.example.js config.js
+ *
+ * config.js is gitignored. Keep real credentials there, never here.
+ *
  * @type {import('./src/@types/index.js').Config} - Bot config
  */
 const config = {

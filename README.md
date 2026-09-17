@@ -42,9 +42,17 @@ bun install
 The web dashboard is a separate Nuxt app; install its dependencies with `bun run install:dashboard`.
 
 
+### Create the config
+Copy the example configuration and fill in your local values:  
+```
+cp config.example.js config.js
+```
+`config.js` is gitignored, so credentials such as the dashboard password or the Spotify secret stay out of the repository.  
+
+
 ### Add Lavalink node
 At least one Lavalink node is required to operate.  
-Edit the [`config.js`](./config.js) file to add the [Lavalink](https://github.com/lavalink-devs/Lavalink) node.  
+Edit your `config.js` to add the [Lavalink](https://github.com/lavalink-devs/Lavalink) node.  
 Only supports Lavalink **v4** nodes, **v4.0.8** or higher is recommended.  
  * Use [public node](https://lavalink-list.darrennathanael.com/)  
  * or [host your own](https://blog.darrennathanael.com/post/how-to-lavalink/)  
@@ -71,7 +79,7 @@ Edit the [`.env`](https://github.com/hmes98318/Music-Disc/blob/main/.env.example
 BOT_TOKEN = "your_token"
 ```
 
-Edit [`config.js`](https://github.com/hmes98318/Music-Disc/blob/main/config.js) to configure other parameters of the bot.  
+Edit `config.js` to configure other parameters of the bot.  
 
 * [**Env & config.js detailed description**](https://musicdisc.ggwp.tw/docs/Configuration-description)
 
@@ -91,7 +99,7 @@ If you don't have any available nodes, you need to first start the server contai
 
 ### Start with Docker Compose
 Please put your **token** into the `BOT_TOKEN` variable.  
-Edit [`config.js`](https://github.com/hmes98318/Music-Disc/blob/main/config.js) to configure other parameters of the bot.  
+Create `config.js` from the example (`cp config.example.js config.js`) and edit it to configure other parameters of the bot.  
 * [**Env & config.js detailed description**](https://musicdisc.ggwp.tw/docs/Configuration-description)
 
 ```yml

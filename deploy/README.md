@@ -12,6 +12,7 @@ container registry.
 ```
 ~/Music-Disc/              # git clone of this fork
 ├── Dockerfile             # bundles Lavalink (LAVALINK_VERSION)
+├── config.js              # Bot config (not in git: contains the dashboard credentials)
 └── deploy/
     ├── docker-compose.yml
     ├── .env               # BOT_TOKEN and TZ
@@ -27,8 +28,10 @@ container registry.
 
 ```bash
 git clone https://github.com/Varjovaras/Music-Disc.git ~/Music-Disc
-cd ~/Music-Disc/deploy
-cp .env.example .env          # then edit BOT_TOKEN
+cd ~/Music-Disc
+cp config.example.js config.js  # then edit: Lavalink node, dashboard credentials
+cd deploy
+cp .env.example .env            # then edit BOT_TOKEN
 cp ~/lava/application.yml .   # reuse the existing Lavalink config
 docker compose up -d --build
 docker compose logs -f
@@ -63,8 +66,8 @@ Until `VPS_HOST` is set, the deploy step is skipped. You can also start a deploy
 hand from the Actions tab (`workflow_dispatch`).
 
 The deploy runs `git pull --ff-only`, so keep the clone clean: don't edit tracked
-files (like `config.js`) on the server, commit and push instead. `application.yml`
-and the data directories are gitignored and are never touched by a deploy.
+files on the server, commit and push instead. `config.js`, `application.yml`, and
+the data directories are gitignored and are never touched by a deploy.
 
 ## Updating
 
@@ -78,7 +81,9 @@ cd deploy
 docker compose up -d --build
 ```
 
-`config.js` (bot settings) is baked into the image, so a rebuild applies changes.
+`config.js` (bot settings) is not in git. It is baked into the image, so edit it
+on the server (first time: `cp config.example.js config.js`) and rebuild to apply
+changes.
 
 `application.yml` (Lavalink config) is not part of the image; edit it on the server
 and restart:
@@ -94,10 +99,10 @@ using the bundled one.
 
 ## Notes
 
-* `config.js` contains the dashboard credentials. Change `bot.webDashboard.user.password`
-  from the default and be aware that the file (and therefore the password) is public
-  in this repository. If you do not want to expose the dashboard, remove the `ports`
-  entry and reach it through an SSH tunnel: `ssh -L 33333:localhost:33333 <user>@<host>`.
+* `config.js` is gitignored and holds the dashboard credentials. Set a strong
+  `bot.webDashboard.user.password`. If you do not want to expose the dashboard,
+  remove the `ports` entry and reach it through an SSH tunnel:
+  `ssh -L 33333:localhost:33333 <user>@<host>`.
 * The YouTube plugin is downloaded from maven on the first Lavalink start into
   `lavalink/plugins`; it needs outbound network access.
 * `plugins.youtube.remoteCipher` points at an external cipher service, so no

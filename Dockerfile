@@ -4,6 +4,9 @@ WORKDIR /tmp
 
 COPY . .
 
+RUN test -f config.js || \
+    (echo "config.js is missing: copy config.example.js to config.js and fill in your values." >&2; exit 1)
+
 RUN bun install --frozen-lockfile && \
     bun install --frozen-lockfile --cwd ./dashboard && \
     bun run build
