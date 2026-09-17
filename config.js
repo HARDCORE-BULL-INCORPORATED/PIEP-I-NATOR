@@ -151,9 +151,11 @@ const config = {
 
     // Local Lavalink node
     localNode: {
-        enabled             : false,
+        enabled             : true,
         autoRestart         : true,
-        // downloadLink        : 'https://github.com/lavalink-devs/Lavalink/releases/download/4.1.1/Lavalink.jar'
+        // Keep the version in sync with LAVALINK_VERSION in the Dockerfile, otherwise the
+        // bot replaces the bundled jar with this download on startup
+        downloadLink        : 'https://github.com/lavalink-devs/Lavalink/releases/download/4.2.2/Lavalink.jar'
     },
 
     // Command permission settings
