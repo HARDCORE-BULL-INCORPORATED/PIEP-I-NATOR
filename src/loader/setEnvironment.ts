@@ -144,6 +144,10 @@ const setEnvironment = (defaultConfig: Config) => {
         ? config.blacklist
         : defaultConfig.blacklist;
 
+    defaultConfig.presetLinks = (Array.isArray(config.presetLinks) && config.presetLinks.length > 0)
+        ? config.presetLinks
+        : defaultConfig.presetLinks;
+
     // Web dashboard settings
     defaultConfig.webDashboard = {
         enabled: config.webDashboard.enabled ?? defaultConfig.webDashboard.enabled,

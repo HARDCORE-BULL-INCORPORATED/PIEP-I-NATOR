@@ -115,6 +115,9 @@ export const cst = {
 
         blacklist               : [],           // It must be the user ID (string[])
 
+        // Preset links queued by the alimesami command
+        presetLinks             : [],           // It must be a URL (string[])
+
         // Web dashboard settings
         webDashboard: {
             enabled                 : true,

@@ -1,0 +1,269 @@
+import i18next from 'i18next';
+
+import { BaseCommand } from './base/BaseCommand.js';
+import { CommandCategory, DJModeEnum, LoadType } from '../@types/index.js';
+import { embeds } from '../embeds/index.js';
+import { isUserInBlacklist } from '../utils/functions/isUserInBlacklist.js';
+import { DJManager } from '../lib/DjManager.js';
+import { QueueLimitManager } from '../lib/QueueLimitManager.js';
+
+import type { Client, GuildMember } from 'discord.js';
+import type { Player } from 'lavashark';
+import type { CommandContext } from './base/CommandContext.js';
+import type { Bot, CommandMetadata } from '../@types/index.js';
+
+
+/**
+ * PlayTop command - Add the search result to the top of the queue so it plays next
+ */
+export class PlayTopCommand extends BaseCommand {
+    public getMetadata(_bot: Bot, lng?: string): CommandMetadata {
+        return {
+            name: 'playtop',
+            aliases: ['pt'],
+            description: i18next.t('commands:CONFIG_PLAYTOP_DESCRIPTION', { lng }),
+            usage: i18next.t('commands:CONFIG_PLAYTOP_USAGE', { lng }),
+            category: CommandCategory.MUSIC,
+            voiceChannel: true,
+            showHelp: true,
+            sendTyping: true,
+            options: [
+                {
+                    name: 'playtop',
+                    description: i18next.t('commands:CONFIG_PLAYTOP_OPTION_DESCRIPTION', { lng }),
+                    type: 3,
+                    required: true
+                }
+            ]
+        };
+    }
+
+    protected async run(bot: Bot, client: Client, context: CommandContext): Promise<void> {
+        // Get search query
+        const str = context.isMessage()
+            ? context.args.join(' ')
+            : context.getStringOption('playtop');
+
+        if (!str) {
+            await context.replyEphemeralError(bot, context.t('commands:MESSAGE_PLAY_ARGS_ERROR'));
+            return;
+        }
+
+        const isM3uUrl = /\.m3u8?(?:[?#].*)?$/i.test(str.trim());
+        if (isM3uUrl) {
+            await context.replyEphemeralError(bot, context.t('commands:ERROR_PLAYLIST_M3U_CANNOT_PLAY_ALL'));
+            return;
+        }
+
+        // Search for tracks
+        let res;
+        try {
+            res = await client.lavashark.search(str);
+        } catch (error) {
+            console.error(error);
+            bot.logger.error(bot.shardId, `Search Error: ${error}`);
+            await context.replyEphemeralError(bot, context.t('commands:ERROR_PLAY_SEARCH', {
+                reason: error instanceof Error ? error.message : String(error)
+            }));
+            return;
+        }
+
+        // Handle search results
+        if (res.loadType === LoadType.ERROR) {
+            bot.logger.error(bot.shardId, `Search Error: ${JSON.stringify(res)}`);
+            await context.replyEphemeralError(bot, context.t('commands:ERROR_PLAY_SEARCH', {
+                reason: (res as any).data?.message
+            }));
+            return;
+        }
+        else if (res.loadType === LoadType.EMPTY) {
+            await context.replyEphemeralError(bot, context.t('commands:MESSAGE_PLAY_SEARCH_NO_MATCH'));
+            return;
+        }
+
+        // Validate user is not in blacklist
+        const voiceChannel = context.isMessage()
+            ? context.getMessage().member?.voice.channel
+            : context.getInteraction().guild!.members.cache.get(context.user.id)?.voice.channel;
+
+        const validBlackist = isUserInBlacklist(voiceChannel, bot.config.blacklist, bot.blacklistManager);
+        if (validBlackist.length > 0) {
+            await context.reply({
+                embeds: [embeds.blacklist(bot, validBlackist, context.language)]
+            });
+            return;
+        }
+
+        // Create or get player
+        const player = await this.#createPlayer(bot, client, context);
+        if (!player) return;
+
+        // Check queue limits before adding tracks
+        const member = context.isMessage()
+            ? context.getMessage().member
+            : context.getInteraction().guild!.members.cache.get(context.user.id);
+
+        const limitCheck = await this.#checkQueueLimits(bot, context, player, res, member);
+        if (!limitCheck.canAdd) return;
+
+        // Insert tracks at the top of the queue
+        await this.#addTracksToTop(bot, context, player, res, limitCheck.tracksToAdd);
+
+        // React to indicate success (text commands only)
+        if (context.isMessage()) {
+            await context.react('👍');
+        }
+        else {
+            await context.replySuccess(bot, context.t('commands:MESSAGE_PLAY_MUSIC_ADD'));
+        }
+    }
+
+    /**
+     * Create and initialize player
+     * @private
+     */
+    async #createPlayer(bot: Bot, client: Client, context: CommandContext): Promise<Player | null> {
+        const voiceChannelId = context.isMessage()
+            ? String(context.getMessage().member?.voice.channelId)
+            : String(context.getInteraction().guild!.members.cache.get(context.user.id)?.voice.channelId);
+
+        const player = client.lavashark.createPlayer({
+            guildId: String(context.guild?.id),
+            voiceChannelId: voiceChannelId,
+            textChannelId: context.channel!.id,
+            selfDeaf: true
+        });
+
+        if (!player.setting) {
+            player.setting = {
+                queuePage: null,
+                volume: null,
+                fairQueueRotation: []
+            };
+        }
+
+        const metadata = context.isMessage() ? context.getMessage() : context.getInteraction();
+
+        try {
+            await player.connect();
+            player.metadata = metadata;
+        } catch (error) {
+            bot.logger.error(bot.shardId, 'Error joining channel: ' + error);
+            await context.replyEphemeralError(bot, context.t('commands:ERROR_PLAY_JOIN_CHANNEL'));
+            await player.destroy();
+            return null;
+        }
+
+        try {
+            if (!player.dashboardMsg) {
+                await client.dashboard.initialize(metadata, player);
+            }
+        } catch (error) {
+            await client.dashboard.destroy(player);
+        }
+
+        // Set first user as DJ in dynamic mode (skip admins and if DJ-role user is in channel)
+        if (bot.config.bot.djMode === DJModeEnum.DYNAMIC && !DJManager.hasDJSet(player)) {
+            const djMember = context.isMessage()
+                ? context.getMessage().member as GuildMember | null
+                : context.getInteraction().member as GuildMember | null;
+            const vc = djMember?.voice.channel;
+            const isAdmin = bot.config.bot.admin.includes(context.user.id);
+            const hasDJRoleUser = vc?.isVoiceBased() ? DJManager.hasDJRoleInChannel(bot, vc) : false;
+
+            if (!isAdmin && !hasDJRoleUser) {
+                DJManager.addDJ(player, context.user.id);
+            }
+        }
+
+        return player;
+    }
+
+    /**
+     * Check queue limits before adding tracks
+     * @private
+     */
+    async #checkQueueLimits(
+        bot: Bot,
+        context: CommandContext,
+        player: Player,
+        res: any,
+        member: GuildMember | null | undefined
+    ): Promise<{ canAdd: boolean; tracksToAdd: number; isPartial: boolean }> {
+        const userId = context.user.id;
+        const guildMember = member as GuildMember | null;
+
+        // For single track
+        if (res.loadType !== LoadType.PLAYLIST) {
+            const checkResult = QueueLimitManager.canAddSongs(bot, player, userId, guildMember, 1);
+
+            if (!checkResult.canAdd) {
+                await context.replyEphemeralError(bot, context.t('commands:ERROR_QUEUE_LIMIT_REACHED', {
+                    current: checkResult.currentCount,
+                    limit: checkResult.limit
+                }));
+                return { canAdd: false, tracksToAdd: 0, isPartial: false };
+            }
+
+            return { canAdd: true, tracksToAdd: 1, isPartial: false };
+        }
+
+        // For playlist
+        const playlistSize = res.tracks.length;
+        const playlistCheck = QueueLimitManager.calculatePlaylistAddition(bot, player, userId, guildMember, playlistSize);
+
+        if (playlistCheck.limitReached) {
+            await context.replyEphemeralError(bot, context.t('commands:ERROR_QUEUE_LIMIT_REACHED', {
+                current: QueueLimitManager.countUserSongsInQueue(player, userId),
+                limit: QueueLimitManager.getUserLimit(bot, userId, guildMember, player)
+            }));
+            return { canAdd: false, tracksToAdd: 0, isPartial: false };
+        }
+
+        // Partial playlist addition
+        if (playlistCheck.willSkipCount > 0) {
+            const currentCount = QueueLimitManager.countUserSongsInQueue(player, userId);
+            const limit = QueueLimitManager.getUserLimit(bot, userId, guildMember, player);
+
+            await context.replyWarning(bot, context.t('commands:MESSAGE_PLAYLIST_PARTIAL', {
+                added: playlistCheck.canAddCount,
+                skipped: playlistCheck.willSkipCount,
+                current: currentCount + playlistCheck.canAddCount,
+                limit: limit
+            }));
+
+            return { canAdd: true, tracksToAdd: playlistCheck.canAddCount, isPartial: true };
+        }
+
+        return { canAdd: true, tracksToAdd: playlistSize, isPartial: false };
+    }
+
+    /**
+     * Insert tracks at the top of the queue and start playback if needed
+     * @private
+     */
+    async #addTracksToTop(bot: Bot, context: CommandContext, player: Player, res: any, tracksToAdd?: number): Promise<void> {
+        const requester = context.isMessage() ? context.getMessage().author : context.getInteraction().user;
+        const curVolume = player.setting.volume ?? bot.guildVolumeManager?.get(player.guildId) ?? bot.config.bot.volume.default;
+
+        const tracks = res.loadType === LoadType.PLAYLIST
+            ? (tracksToAdd !== undefined ? res.tracks.slice(0, tracksToAdd) : res.tracks)
+            : [res.tracks[0]];
+
+        for (const track of tracks) {
+            (track as any).requester = requester;
+        }
+
+        player.queue.tracks.unshift(...tracks);
+
+        if (!player.playing) {
+            player.filters.setVolume(curVolume);
+            await player.play()
+                .catch(async (error) => {
+                    bot.logger.error(bot.shardId, 'Error playing track: ' + error);
+                    await context.replyError(bot, context.t('commands:ERROR_PLAY_MUSIC', { reason: JSON.stringify(error) }));
+                    return player.destroy();
+                });
+        }
+    }
+}

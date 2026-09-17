@@ -119,6 +119,7 @@ export type Config = {
     nodeList: NodeOptions[];
     spotify: SpotifyConfig;
     blacklist: string[];
+    presetLinks: string[];
     webDashboard: WebDashboardConfig;
     localNode: LocalNodeConfig;
     command: CommandConfig;

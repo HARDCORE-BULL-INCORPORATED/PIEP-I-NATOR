@@ -51,6 +51,9 @@
   "CONFIG_PLAY_DESCRIPTION": "Enter a song link or name to play",
   "CONFIG_PLAY_USAGE": "play <URL/song name>",
   "CONFIG_PLAY_OPTION_DESCRIPTION": "The song link or song name",
+  "CONFIG_PLAYTOP_DESCRIPTION": "Enter a song link or name to add to the top of the queue",
+  "CONFIG_PLAYTOP_USAGE": "playtop <URL/song name>",
+  "CONFIG_PLAYTOP_OPTION_DESCRIPTION": "The song link or song name to play next",
   "CONFIG_PLAYFIRST_DESCRIPTION": "Enter a song link or name to play first",
   "CONFIG_PLAYFIRST_USAGE": "playfirst <URL/song name>",
   "CONFIG_PLAYFIRST_OPTION_DESCRIPTION": "The song link or song name to play first",
@@ -268,5 +271,11 @@
   "MESSAGE_SKIP_EMPTY_DISCONNECT": "⏭️ Skipped current track. Queue is now empty.",
   "ERROR_PLAYLIST_DISABLED": "❌ Playlist feature is disabled.",
   "ERROR_PLAYLIST_M3U_CANNOT_PLAY_ALL": "❌ M3U playlists cannot be queued entirely. Please use the `/radio` command to select a specific station.",
-  "ERROR_PLAYLIST_IMPORT_ADMIN_DJ_ONLY": "❌ M3U playlist import is restricted to Admins and DJs only."
+  "ERROR_PLAYLIST_IMPORT_ADMIN_DJ_ONLY": "❌ M3U playlist import is restricted to Admins and DJs only.",
+  "CONFIG_ALIMESAMI_DESCRIPTION": "Play the preset list of YouTube links",
+  "CONFIG_ALIMESAMI_USAGE": "alimesami",
+  "ERROR_ALIMESAMI_NO_LINKS": "❌ No preset links are configured. Add them to `presetLinks` in config.js",
+  "ERROR_ALIMESAMI_NO_RESULTS": "❌ None of the preset links could be resolved:\n{{links}}",
+  "MESSAGE_ALIMESAMI_ADDED": "Added **{{added}}** songs to the queue. Total in queue: **{{queueTotal}}**",
+  "MESSAGE_ALIMESAMI_FAILED_LINKS": "❌ Could not resolve {{skipped}} link(s):\n{{links}}"
 }
