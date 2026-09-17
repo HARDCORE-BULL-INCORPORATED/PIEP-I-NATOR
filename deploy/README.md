@@ -43,7 +43,33 @@ of free RAM for the build.
 
 Stop the old standalone Lavalink service; the container now runs its own node.
 
+## Automatic deployment
+
+[`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml) deploys on every push to
+`main`: it SSHes into the VPS, runs `git pull --ff-only` in the clone, and then
+`docker compose up -d --build`. The build still happens on the server.
+
+Add these repository secrets (Settings → Secrets and variables → Actions):
+
+| Secret        | Value                                                                            |
+| ------------- | -------------------------------------------------------------------------------- |
+| `VPS_HOST`    | Server hostname or IP                                                            |
+| `VPS_USER`    | SSH user, e.g. `kristjan`                                                        |
+| `VPS_SSH_KEY` | Private key (ED25519) whose public key is in the VPS `~/.ssh/authorized_keys`    |
+| `VPS_DIR`     | Path of the clone on the server, e.g. `/home/kristjan/Music-Disc`                |
+| `VPS_PORT`    | Optional SSH port, defaults to `22`                                              |
+
+Until `VPS_HOST` is set, the deploy step is skipped. You can also start a deploy by
+hand from the Actions tab (`workflow_dispatch`).
+
+The deploy runs `git pull --ff-only`, so keep the clone clean: don't edit tracked
+files (like `config.js`) on the server, commit and push instead. `application.yml`
+and the data directories are gitignored and are never touched by a deploy.
+
 ## Updating
+
+With the workflow configured above, updates happen automatically on push. To do it by
+hand:
 
 ```bash
 cd ~/Music-Disc
