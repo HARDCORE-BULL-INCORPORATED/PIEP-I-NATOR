@@ -67,7 +67,7 @@ export class BotInfoRouter extends BaseRouter {
             startupTime: new Date(this.bot.sysInfo.startupTime).toISOString(),
             versions: {
                 bot: this.bot.sysInfo.bot_version,
-                node: this.bot.sysInfo.node_version,
+                runtime: this.bot.sysInfo.runtime_version,
                 discordJs: this.bot.sysInfo.dc_version,
                 lavashark: this.bot.sysInfo.shark_version,
             },

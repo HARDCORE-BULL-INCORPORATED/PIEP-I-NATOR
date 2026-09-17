@@ -6,7 +6,7 @@ import {
 } from './docker.js';
 
 function printUsage(): void {
-    console.log('Usage: npm run docker:build -- [version-tag]');
+    console.log('Usage: bun run docker:build -- [version-tag]');
     console.log(`Default version tag: ${DEFAULT_VERSION_TAG}`);
 }
 

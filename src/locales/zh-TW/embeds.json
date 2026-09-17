@@ -43,7 +43,7 @@
   "STATUS_LATENCY_TITLE": "🛰️ 延遲",
   "STATUS_LATENCY_VALUE": "機器人: **{{botPing}}**\nAPI: **{{apiPing}} 毫秒**",
   "STATUS_SYSTEM_TITLE": "⚙️ 系統",
-  "STATUS_SYSTEM_VALUE": "作業系統: **{{os_version}}**\nNode.js: **{{node_version}}**\nDiscord.js: **{{dc_version}}**\nLavaShark: **{{shark_version}}**\nCPU: **{{cpu}}**\n運行時間: **{{uptime}}**\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+  "STATUS_SYSTEM_VALUE": "作業系統: **{{os_version}}**\nBun: **{{runtime_version}}**\nDiscord.js: **{{dc_version}}**\nLavaShark: **{{shark_version}}**\nCPU: **{{cpu}}**\n運行時間: **{{uptime}}**\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
   "STATUS_USAGE_TITLE": "📊 資源使用",
   "STATUS_USAGE_VALUE": "CPU: **{{cpuUsage}}**\nRam: **{{ramUsage}}**\nHeap: **{{heapUsage}}**\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
   "QUEUE_NOW_PLAYING": "**正在播放:**",

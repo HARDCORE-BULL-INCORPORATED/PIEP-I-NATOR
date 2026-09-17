@@ -43,7 +43,7 @@
   "STATUS_LATENCY_TITLE": "🛰️ 지연시간",
   "STATUS_LATENCY_VALUE": "**봇:** {{botPing}}\n**API:** {{apiPing}}ms",
   "STATUS_SYSTEM_TITLE": "⚙️ 시스템",
-  "STATUS_SYSTEM_VALUE": "**운영체제:** {{os_version}}\n**Node.js:** {{node_version}}\n**Discord.js:** {{dc_version}}\n**LavaShark:** {{shark_version}}\n**CPU:** {{cpu}}\n**가동시간:** {{uptime}}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+  "STATUS_SYSTEM_VALUE": "**운영체제:** {{os_version}}\n**Bun:** {{runtime_version}}\n**Discord.js:** {{dc_version}}\n**LavaShark:** {{shark_version}}\n**CPU:** {{cpu}}\n**가동시간:** {{uptime}}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
   "STATUS_USAGE_TITLE": "📊 사용량",
   "STATUS_USAGE_VALUE": "**CPU:** {{cpuUsage}}\n**메모리:** {{ramUsage}}\n**할당된 메모리:** {{heapUsage}}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
   "QUEUE_NOW_PLAYING": "**재생 중:**",

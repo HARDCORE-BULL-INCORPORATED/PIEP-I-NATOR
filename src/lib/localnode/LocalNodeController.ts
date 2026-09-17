@@ -39,8 +39,6 @@ export class LocalNodeController {
     #startupPromise: Promise<void> | null;
 
     constructor(downloadLink: string, logger: Logger, autoRestart: boolean = true) {
-        const __filename = fileURLToPath(import.meta.url);
-
         this.downloadLink = downloadLink;
         this.autoRestart = autoRestart;
         this.logger = logger;
@@ -50,7 +48,7 @@ export class LocalNodeController {
         this.port = null;
 
         this.#lavalinkProcessController = null;
-        this.#lavalinkProcessFileName = (path.extname(__filename) === '.ts') ? 'LavalinkProcess.ts' : 'LavalinkProcess.js';
+        this.#lavalinkProcessFileName = 'LavalinkProcess.ts';
         this.#isStarting = false;
         this.#logGeneration = 0;
         this.#manualRestart = false;

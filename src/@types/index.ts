@@ -235,7 +235,7 @@ export type SystemInfo = {
     startupTime: Date;
     os_version: string;
     bot_version: string;
-    node_version: string;
+    runtime_version: string;
     dc_version: string;
     shark_version: string;
     cpu: string;

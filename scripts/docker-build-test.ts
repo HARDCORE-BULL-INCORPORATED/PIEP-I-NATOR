@@ -5,15 +5,15 @@ import {
     runDocker,
 } from './docker.js';
 
-const EXPECTED_ENTRYPOINT = ['npm', 'run', 'start:server'];
+const EXPECTED_ENTRYPOINT = ['bun', './src/index.ts'];
 const REQUIRED_PATHS = [
+    '/bot/bun.lock',
     '/bot/config.js',
     '/bot/dashboard/.output/public/index.html',
-    '/bot/dist/src/index.js',
     '/bot/node_modules/discord.js/package.json',
-    '/bot/package-lock.json',
     '/bot/package.json',
     '/bot/server',
+    '/bot/src/index.ts',
     '/usr/bin/java',
 ];
 
@@ -59,7 +59,7 @@ async function verifyRequiredFiles(imageReference: string): Promise<void> {
         "  console.error(`Missing image paths: ${missingPaths.join(', ')}`);",
         '  process.exit(1);',
         '}',
-        "const Database = require('better-sqlite3');",
+        "const { Database } = require('bun:sqlite');",
         "const database = new Database(':memory:');",
         'database.close();',
         "console.log('Container runtime smoke test passed.');",
@@ -69,7 +69,7 @@ async function verifyRequiredFiles(imageReference: string): Promise<void> {
         'run',
         '--rm',
         '--entrypoint',
-        'node',
+        'bun',
         imageReference,
         '-e',
         verificationScript,

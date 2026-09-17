@@ -1,10 +1,7 @@
 import {lookup} from 'node:dns/promises';
 import {BlockList, isIP} from 'node:net';
 
-import {Agent, fetch} from 'undici';
-
 import type {LookupAddress} from 'node:dns';
-import type {LookupFunction} from 'node:net';
 
 
 export const DEFAULT_REMOTE_TEXT_MAX_BYTES = 1024 * 1024;
@@ -168,18 +165,9 @@ export async function fetchSafeRemoteText(
 
     for (let redirectCount = 0; ; redirectCount++) {
         const addresses = await resolvePublicAddresses(currentUrl.hostname);
-        const dispatcher = createPinnedDispatcher(addresses, limits);
 
         try {
-            const response = await fetch(currentUrl, {
-                dispatcher,
-                headers: {
-                    accept: 'application/vnd.apple.mpegurl, audio/mpegurl, text/plain, */*',
-                    'user-agent': 'Music-Disc playlist importer'
-                },
-                redirect: 'manual',
-                signal
-            });
+            const response = await fetchFromPinnedAddress(currentUrl, addresses, signal);
 
             if (REDIRECT_STATUSES.has(response.status)) {
                 await response.body?.cancel();
@@ -225,13 +213,7 @@ export async function fetchSafeRemoteText(
                 throw new SafeRemoteTextError('TIMEOUT', 'The remote file download timed out.');
             }
 
-            if (isResponseSizeError(error)) {
-                throw new SafeRemoteTextError('TOO_LARGE', 'The remote file exceeds the allowed size.');
-            }
-
             throw new SafeRemoteTextError('NETWORK_ERROR', 'The remote file could not be downloaded.');
-        } finally {
-            await dispatcher.close().catch(() => {});
         }
     }
 }
@@ -290,48 +272,49 @@ async function resolvePublicAddresses(hostname: string): Promise<ResolvedAddress
     }
 }
 
-function createPinnedDispatcher(addresses: readonly ResolvedAddress[], limits: RemoteTextLimits): Agent {
-    const pinnedLookup: LookupFunction = (_hostname, options, callback) => {
-        const requestedFamily = options.family ?? 0;
-        const candidates = requestedFamily === 0
-            ? addresses
-            : addresses.filter((address) => address.family === requestedFamily);
-
-        if (candidates.length === 0) {
-            const error = new Error('No validated address matches the requested IP family.') as NodeJS.ErrnoException;
-            error.code = 'ENOTFOUND';
-            callback(error, '', 0);
-            return;
-        }
-
-        if (options.all) {
-            callback(null, [...candidates]);
-            return;
-        }
-
-        const selectedAddress = candidates[0];
-        callback(null, selectedAddress.address, selectedAddress.family);
+/**
+ * Sends the request to a validated address instead of the hostname so DNS
+ * rebinding cannot redirect the connection. The Host header and the TLS
+ * server name keep the request bound to the original origin.
+ */
+async function fetchFromPinnedAddress(
+    url: URL,
+    addresses: readonly ResolvedAddress[],
+    signal: AbortSignal
+): Promise<Response> {
+    const requestInit: BunFetchRequestInit = {
+        headers: {
+            accept: 'application/vnd.apple.mpegurl, audio/mpegurl, text/plain, */*',
+            host: url.host,
+            'user-agent': 'Music-Disc playlist importer'
+        },
+        redirect: 'manual',
+        signal,
+        tls: { serverName: url.hostname },
+        // `proxy: false` keeps environment proxy variables from applying to the
+        // pinned address; bun-types 1.4.2 does not include `false` in its type yet
+        proxy: false as unknown as BunFetchRequestInit['proxy']
     };
+    let lastError: unknown;
 
-    return new Agent({
-        bodyTimeout: limits.timeoutMs,
-        connect: {lookup: pinnedLookup},
-        connectTimeout: limits.timeoutMs,
-        headersTimeout: limits.timeoutMs,
-        maxResponseSize: limits.maxBytes + 1
-    });
+    for (const address of addresses) {
+        try {
+            return await fetch(createPinnedUrl(url, address), requestInit);
+        } catch (error) {
+            lastError = error;
+        }
+    }
+
+    throw lastError ?? new SafeRemoteTextError('NETWORK_ERROR', 'The remote file could not be downloaded.');
+}
+
+/** Returns a copy of the URL whose host is the supplied validated IP address. */
+function createPinnedUrl(url: URL, address: ResolvedAddress): URL {
+    const pinnedUrl = new URL(url.toString());
+    pinnedUrl.hostname = address.family === 6 ? `[${address.address}]` : address.address;
+    return pinnedUrl;
 }
 
 function isAbortError(error: unknown): boolean {
     return error instanceof Error && error.name === 'AbortError';
-}
-
-function isResponseSizeError(error: unknown): boolean {
-    if (!(error instanceof Error)) {
-        return false;
-    }
-
-    const errorWithCause = error as Error & {cause?: {code?: string}; code?: string};
-    return errorWithCause.code === 'UND_ERR_RES_EXCEEDED' ||
-        errorWithCause.cause?.code === 'UND_ERR_RES_EXCEEDED';
 }

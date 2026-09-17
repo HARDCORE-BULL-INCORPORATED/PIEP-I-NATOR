@@ -43,7 +43,7 @@
   "STATUS_LATENCY_TITLE": "🛰️ ЗАДЕРЖКА",
   "STATUS_LATENCY_VALUE": "Бот: **{{botPing}}**\nAPI: **{{apiPing}}мс**",
   "STATUS_SYSTEM_TITLE": "⚙️ СИСТЕМА",
-  "STATUS_SYSTEM_VALUE": "ОС: **{{os_version}}**\nNode.js: **{{node_version}}**\nDiscord.js: **{{dc_version}}**\nLavaShark: **{{shark_version}}**\nCPU: **{{cpu}}**\nВремя работы: **{{uptime}}**\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+  "STATUS_SYSTEM_VALUE": "ОС: **{{os_version}}**\nBun: **{{runtime_version}}**\nDiscord.js: **{{dc_version}}**\nLavaShark: **{{shark_version}}**\nCPU: **{{cpu}}**\nВремя работы: **{{uptime}}**\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
   "STATUS_USAGE_TITLE": "📊 НАГРУЗКА",
   "STATUS_USAGE_VALUE": "ЦП: **{{cpuUsage}}**\nОЗУ: **{{ramUsage}}**\nHeap: **{{heapUsage}}**\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
   "QUEUE_NOW_PLAYING": "**Сейчас играет:**",

@@ -1,10 +1,6 @@
 { pkgs }: {
     deps = [
-        pkgs.esbuild
-        pkgs.nodejs-22_x
+        pkgs.bun
         pkgs.jdk
-
-        pkgs.nodePackages.typescript
-        pkgs.nodePackages.typescript-language-server
     ];
 }

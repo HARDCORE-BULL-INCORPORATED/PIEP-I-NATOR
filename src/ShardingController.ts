@@ -10,18 +10,15 @@ export class ShardingController {
     public manager: ShardingManager;
 
     constructor() {
-        dotenv.config({ quiet: true });;
+        dotenv.config({ quiet: true });
 
         const __filename = fileURLToPath(import.meta.url);
         const __dirname = path.dirname(__filename);
 
-        const fileExtension = path.extname(__filename);
-        this.shardFilePath = path.join(__dirname, `./App${fileExtension}`);
-
-        const execArgv = fileExtension === '.ts' ? ['--import', 'tsx'] : [];
+        // Bun runs the TypeScript sources directly, so shards are forked from src/
+        this.shardFilePath = path.join(__dirname, './App.ts');
 
         this.manager = new ShardingManager(this.shardFilePath, {
-            execArgv,
             token: process.env.BOT_TOKEN
         });
     }

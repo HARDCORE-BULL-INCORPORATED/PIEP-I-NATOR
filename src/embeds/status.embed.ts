@@ -17,7 +17,7 @@ const botStatus = (bot: Bot, systemStatus: SystemStatus, lng?: string) => {
         .setURL('https://github.com/hmes98318/Music-Disc')
         .setDescription(bot.i18n.t('embeds:STATUS_DESCRIPTION', { serverCount: systemStatus.serverCount, playingCount: systemStatus.playing, lng }))
         .addFields(
-            { name: bot.i18n.t('embeds:STATUS_SYSTEM_TITLE', { lng }), value: bot.i18n.t('embeds:STATUS_SYSTEM_VALUE', { os_version: bot.sysInfo.os_version, node_version: bot.sysInfo.node_version, dc_version: bot.sysInfo.dc_version, shark_version: bot.sysInfo.shark_version, cpu: bot.sysInfo.cpu, uptime: systemStatus.uptime, lng }), inline: false },
+            { name: bot.i18n.t('embeds:STATUS_SYSTEM_TITLE', { lng }), value: bot.i18n.t('embeds:STATUS_SYSTEM_VALUE', { os_version: bot.sysInfo.os_version, runtime_version: bot.sysInfo.runtime_version, dc_version: bot.sysInfo.dc_version, shark_version: bot.sysInfo.shark_version, cpu: bot.sysInfo.cpu, uptime: systemStatus.uptime, lng }), inline: false },
             { name: bot.i18n.t('embeds:STATUS_USAGE_TITLE', { lng }), value: bot.i18n.t('embeds:STATUS_USAGE_VALUE', { cpuUsage: cpuUsage, ramUsage: ramUsage, heapUsage: heapUsage, lng }), inline: false },
             { name: bot.i18n.t('embeds:STATUS_LATENCY_TITLE', { lng }), value: bot.i18n.t('embeds:STATUS_LATENCY_VALUE', { botPing: systemStatus.ping.bot, apiPing: systemStatus.ping.api, lng }), inline: false }
         )

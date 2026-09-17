@@ -37,9 +37,9 @@ docker compose logs -f
 `application.yml` must exist before the first start, otherwise Docker creates a
 directory with that name.
 
-The first build takes several minutes (dashboard build, TypeScript compile, native
-module build); later builds reuse Docker's layer cache. The VPS needs roughly 2 GB
-of free RAM for the build.
+The first build takes several minutes (Bun install and dashboard build); later
+builds reuse Docker's layer cache. The VPS needs roughly 2 GB of free RAM for the
+build.
 
 Stop the old standalone Lavalink service; the container now runs its own node.
 

@@ -24,7 +24,7 @@ class LavalinkProcess {
 
         // Force UTF-8 encoding on all JVM I/O streams (Java 17+ flags).
         // Without these flags, the JVM defaults to the OS code page (e.g. CP950 / CP936
-        // on Chinese Windows), causing non-ASCII log output to be garbled when Node.js
+        // on Chinese Windows), causing non-ASCII log output to be garbled when the runtime
         // decodes the pipe bytes as UTF-8.
         this.#lavalinkProcess = child_process.spawn('java', [
             '-Dfile.encoding=UTF-8',

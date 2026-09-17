@@ -24,7 +24,7 @@ const getSysInfo = async () => {
         startupTime: new Date(),
         os_version: await getOSVersion(),
         bot_version: `v${await getBotVersion()}`,
-        node_version: process.version,
+        runtime_version: process.version,
         dc_version: `v${dcVersion}`,
         shark_version: `v${sharkVersion}`,
         cpu: `${os.cpus()[0].model}`

@@ -4,7 +4,7 @@
 
 <a href="https://github.com/hmes98318/Music-Disc/releases"><img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/hmes98318/Music-Disc?style=for-the-badge"></a> 
 <a href="https://discord.js.org/"><img src="https://img.shields.io/badge/Discord.JS-v14-blue?style=for-the-badge&logo=DISCORD" /></a> 
-<a href="https://nodejs.org/"><img src="https://img.shields.io/badge/Node.JS-v22-brightgreen?style=for-the-badge&logo=Node.js"></a> 
+<a href="https://bun.sh/"><img src="https://img.shields.io/badge/Bun-v1.4.2-black?style=for-the-badge&logo=bun"></a> 
 <a href="https://github.com/hmes98318/Music-Disc/blob/main/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/hmes98318/Music-Disc?style=for-the-badge&color=brightgreen"></a>  
 
 A discord music bot, supports **YouTube**, **Spotify**, **SoundCloud**, **Deezer** streams and web dashboard.  
@@ -24,7 +24,7 @@ If you encounter any issues or would like to contribute to the community, please
 
 
 
-## Deploying with node.js
+## Deploying with Bun
 
 ### Clone the latest version of the repository
 ```
@@ -34,10 +34,12 @@ or [**click here**](https://github.com/hmes98318/Music-Disc/releases) to downloa
 
 
 ### Install the dependencies
-install all the dependencies from [**package.json**](./package.json)  
+Install all dependencies from [**package.json**](./package.json) with [**Bun**](https://bun.sh) (1.4.2 or newer).  
 ```
-npm ci
+bun install
 ```
+
+The web dashboard is a separate Nuxt app; install its dependencies with `bun run install:dashboard`.
 
 
 ### Add Lavalink node
@@ -76,7 +78,7 @@ Edit [`config.js`](https://github.com/hmes98318/Music-Disc/blob/main/config.js) 
 
 ### Running the script 
 ```
-npm run start
+bun run start
 ```
 
 

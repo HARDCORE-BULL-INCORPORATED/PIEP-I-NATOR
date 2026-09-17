@@ -1,24 +1,21 @@
 {
     "compilerOptions": {
-        "incremental": true,
         "target": "ES2022",
         "module": "NodeNext",
         "moduleResolution": "NodeNext",
         "lib": [
             "ES2022"
         ],
-        "rootDirs": [
-            "src/"
+        "types": [
+            "bun",
+            "node"
         ],
-        "outDir": "dist/",
+        "noEmit": true,
         "allowJs": true,
         "checkJs": true,
-        "declaration": false,
-        "noEmit": false,
         "isolatedModules": true,
         "esModuleInterop": true,
         "resolveJsonModule": true,
-        "removeComments": true,
         "forceConsistentCasingInFileNames": true,
         "strict": true,
         "skipDefaultLibCheck": true,

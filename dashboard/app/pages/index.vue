@@ -24,8 +24,8 @@
                         <span class="font-medium text-snow">{{ botStore.summary.versions.bot }}</span>
                     </li>
                     <li class="flex justify-between text-sm">
-                        <span class="text-muted">Node.js</span>
-                        <span class="font-medium text-snow">{{ botStore.summary.versions.node }}</span>
+                        <span class="text-muted">Bun</span>
+                        <span class="font-medium text-snow">{{ botStore.summary.versions.runtime }}</span>
                     </li>
                     <li class="flex justify-between text-sm">
                         <span class="text-muted">Discord.js</span>

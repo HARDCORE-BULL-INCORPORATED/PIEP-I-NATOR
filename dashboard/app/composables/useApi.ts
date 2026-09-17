@@ -184,7 +184,7 @@ export interface BotSummary {
     startupTime: string;
     versions: {
         bot: string;
-        node: string;
+        runtime: string;
         discordJs: string;
         lavashark: string;
     };

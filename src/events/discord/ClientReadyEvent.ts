@@ -25,14 +25,14 @@ export class ClientReadyEvent extends BaseDiscordEvent<Events.ClientReady> {
 
         const release = {
             bot: `${bot.config.bot.name}: ${cst.color.cyan}${bot.sysInfo.bot_version}${cst.color.white}`,
-            nodejs: `Node.js:    ${cst.color.cyan}${bot.sysInfo.node_version}${cst.color.white}`,
+            runtime: `Bun:        ${cst.color.cyan}${bot.sysInfo.runtime_version}${cst.color.white}`,
             djs: `Discord.js: ${cst.color.cyan}${bot.sysInfo.dc_version}${cst.color.white}`,
             shark: `LavaShark:  ${cst.color.cyan}${bot.sysInfo.shark_version}${cst.color.white}`,
         };
 
         bot.logger.log( bot.shardId, `+-----------------------+`);
         bot.logger.log( bot.shardId, `| ${release.bot.padEnd(30, ' ')} |`);
-        bot.logger.log( bot.shardId, `| ${release.nodejs.padEnd(30, ' ')} |`);
+        bot.logger.log( bot.shardId, `| ${release.runtime.padEnd(30, ' ')} |`);
         bot.logger.log( bot.shardId, `| ${release.djs.padEnd(30, ' ')} |`);
         bot.logger.log( bot.shardId, `| ${release.shark.padEnd(30, ' ')} |`);
         bot.logger.log( bot.shardId, `+-----------------------+`);

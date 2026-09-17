@@ -4,12 +4,12 @@
     "type": "module",
     "private": true,
     "scripts": {
-        "build": "nuxt build",
-        "dev": "nuxt dev",
-        "generate": "nuxt generate",
-        "preview": "nuxt preview",
-        "postinstall": "nuxt prepare",
-        "format": "prettier --write ."
+        "build": "bun --bun x nuxt build",
+        "dev": "bun --bun x nuxt dev",
+        "generate": "bun --bun x nuxt generate",
+        "preview": "bun --bun x nuxt preview",
+        "postinstall": "bun --bun x nuxt prepare",
+        "format": "bun --bun x prettier --write ."
     },
     "author": "hmes98318",
     "license": "MIT",
@@ -29,6 +29,6 @@
         "prettier": "^3.9.6"
     },
     "engines": {
-        "node": ">=22"
+        "bun": ">=1.4.2"
     }
 }

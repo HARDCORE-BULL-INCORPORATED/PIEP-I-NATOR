@@ -4,18 +4,17 @@
     "description": "Discord Music Bot",
     "main": "./src/index.ts",
     "type": "module",
+    "packageManager": "bun@1.4.2",
     "scripts": {
-        "start": "npm run build && node ./dist/src/index.js",
-        "start:server": "node ./dist/src/index.js",
-        "build": "npm run build:dashboard && npm run build:server",
-        "build:server": "tsc",
-        "build:dashboard": "npm --prefix ./dashboard run generate",
-        "docker:build": "tsx ./scripts/docker-build.ts",
-        "docker:build:test": "tsx ./scripts/docker-build-test.ts",
-        "install:dashboard": "npm --prefix ./dashboard ci",
-        "dev": "npm run typecheck -- --incremental false && tsx ./src/index.ts",
-        "lint": "eslint . --color",
-        "typecheck": "tsc --noEmit"
+        "start": "bun ./src/index.ts",
+        "build": "bun run build:dashboard",
+        "build:dashboard": "bun run --cwd ./dashboard generate",
+        "install:dashboard": "bun install --cwd ./dashboard",
+        "dev": "bun run typecheck && bun ./src/index.ts",
+        "docker:build": "bun ./scripts/docker-build.ts",
+        "docker:build:test": "bun ./scripts/docker-build-test.ts",
+        "lint": "bun --bun x eslint . --color",
+        "typecheck": "bun --bun x tsc --noEmit"
     },
     "repository": {
         "type": "git",
@@ -33,7 +32,6 @@
     },
     "dependencies": {
         "bcryptjs": "^3.0.3",
-        "better-sqlite3": "^13.0.3",
         "cookie": "^2.0.1",
         "discord.js": "~14.27.0",
         "dotenv": "^17.4.2",
@@ -41,21 +39,19 @@
         "i18next": "^26.3.6",
         "i18next-fs-backend": "^2.6.7",
         "lavashark": "^2.3.3",
-        "undici": "^8.10.0",
         "zod": "^4.4.3"
     },
     "devDependencies": {
         "@eslint/js": "^10.0.1",
-        "@types/better-sqlite3": "^9.6.0",
+        "@types/bun": "^1.4.2",
         "@types/express": "^5.0.6",
         "@types/node": "^26.2.0",
         "eslint": "^10.8.1",
         "globals": "^17.9.0",
-        "tsx": "^4.23.12",
         "typescript": "~6.0.3",
         "typescript-eslint": "^8.67.0"
     },
     "engines": {
-        "node": ">=22.23.2"
+        "bun": ">=1.4.2"
     }
 }

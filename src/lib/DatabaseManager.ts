@@ -1,16 +1,16 @@
-import Database from 'better-sqlite3';
+import { Database } from 'bun:sqlite';
 import { existsSync, mkdirSync } from 'fs';
 import { dirname } from 'path';
 
 import type { Bot } from '../@types/index.js';
 
 
-type DatabaseTransaction<T extends unknown[]> = (db: Database.Database, ...args: T) => void;
+type DatabaseTransaction<T extends unknown[]> = (db: Database, ...args: T) => void;
 
 export class DatabaseManager {
     private readonly bot: Bot;
     private readonly dbPath: string;
-    private db: Database.Database | null = null;
+    private db: Database | null = null;
 
     constructor(bot: Bot) {
         this.bot = bot;
@@ -35,7 +35,7 @@ export class DatabaseManager {
         }
     }
 
-    public getDatabase(): Database.Database | null {
+    public getDatabase(): Database | null {
         return this.db;
     }
 
@@ -60,7 +60,7 @@ export class DatabaseManager {
         }
 
         try {
-            this.db.pragma('wal_checkpoint(TRUNCATE)');
+            this.db.run('PRAGMA wal_checkpoint(TRUNCATE);');
         } catch (_) {}
 
         this.db.close();
@@ -73,11 +73,11 @@ export class DatabaseManager {
             return;
         }
 
-        this.db.pragma('journal_mode = WAL');   // Default is DELETE
-        this.db.pragma('synchronous = NORMAL'); // Default is FULL
-        this.db.pragma('temp_store = MEMORY');
-        this.db.pragma('foreign_keys = ON');    // Default is OFF
-        this.db.pragma('busy_timeout = 5000');  // Default is 0 (no timeout)
+        this.db.run('PRAGMA journal_mode = WAL;');   // Default is DELETE
+        this.db.run('PRAGMA synchronous = NORMAL;'); // Default is FULL
+        this.db.run('PRAGMA temp_store = MEMORY;');
+        this.db.run('PRAGMA foreign_keys = ON;');    // Default is OFF
+        this.db.run('PRAGMA busy_timeout = 5000;');  // Default is 0 (no timeout)
     }
 
     private initializeSchema(): void {
@@ -85,7 +85,7 @@ export class DatabaseManager {
             return;
         }
 
-        this.db.exec(`
+        this.db.run(`
             CREATE TABLE IF NOT EXISTS queues (
                 guild_id TEXT PRIMARY KEY,
                 voice_channel_id TEXT NOT NULL,
@@ -139,7 +139,7 @@ export class DatabaseManager {
         const hasIsM3u = columns.some((col) => col.name === 'is_m3u');
 
         if (!hasIsM3u) {
-            this.db.exec('ALTER TABLE playlists ADD COLUMN is_m3u INTEGER DEFAULT 0;');
+            this.db.run('ALTER TABLE playlists ADD COLUMN is_m3u INTEGER DEFAULT 0;');
         }
     }
 }

@@ -1,15 +1,12 @@
-FROM node:22.22.3-slim AS node_build
+FROM oven/bun:1.4.2-slim AS bun_build
 
 WORKDIR /tmp
 
-RUN apt-get update && \
-    apt-get install --no-install-recommends -y g++ make python3
-
 COPY . .
 
-RUN npm ci && \
-    npm --prefix ./dashboard ci && \
-    npm run build
+RUN bun install --frozen-lockfile && \
+    bun install --frozen-lockfile --cwd ./dashboard && \
+    bun run build
 
 
 ############################################################
@@ -26,24 +23,24 @@ RUN apk add --no-cache ca-certificates && \
 
 ############################################################
 
-FROM node:22.22.3-slim
+FROM oven/bun:1.4.2-slim
 
 WORKDIR /bot
 
 RUN apt-get update && \
-    apt-get install --no-install-recommends -y openjdk-17-jre-headless && \
+    apt-get install --no-install-recommends -y openjdk-21-jre-headless && \
     rm -rf /var/lib/apt/lists/*
 
 
-COPY --from=node_build /tmp/dist ./dist
-COPY --from=node_build /tmp/node_modules ./node_modules
-COPY --from=node_build /tmp/server ./server
-COPY --from=node_build /tmp/dashboard/.output/public ./dashboard/.output/public
+COPY --from=bun_build /tmp/node_modules ./node_modules
+COPY --from=bun_build /tmp/src ./src
+COPY --from=bun_build /tmp/server ./server
+COPY --from=bun_build /tmp/dashboard/.output/public ./dashboard/.output/public
 
 COPY --from=lavalink /Lavalink.jar ./server/Lavalink.jar
 
-COPY --from=node_build /tmp/package*.json ./
-COPY --from=node_build /tmp/config.js ./
+COPY --from=bun_build /tmp/package.json /tmp/bun.lock ./
+COPY --from=bun_build /tmp/config.js ./
 
 
-ENTRYPOINT ["npm", "run", "start:server"]
+ENTRYPOINT ["bun", "./src/index.ts"]

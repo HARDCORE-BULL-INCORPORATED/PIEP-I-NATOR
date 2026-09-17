@@ -18,7 +18,7 @@ assignees: ''
 <!-- If applicable, add screenshots to help explain your problem. -->
 
 **Version Information:**
- - Node.js: x.x.x
+ - Bun: x.x.x
  - Discord.js: x.x.x
  - Music-Disc: x.x.x (commit hash)
 

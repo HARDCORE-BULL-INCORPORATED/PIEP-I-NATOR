@@ -2,7 +2,6 @@ import { timingSafeEqual } from 'crypto';
 
 import bcrypt from 'bcryptjs';
 import { parseCookie } from 'cookie';
-import undici from 'undici';
 
 import { LoginTypeEnum } from '../../../@types/index.js';
 import { generateRandomKey } from '../../../utils/functions/generateRandomKey.js';
@@ -309,7 +308,7 @@ export class AuthRouter extends BaseRouter {
                 return;
             }
 
-            const tokenResponse = await undici.request('https://discord.com/api/oauth2/token', {
+            const tokenResponse = await fetch('https://discord.com/api/oauth2/token', {
                 method: 'POST',
                 body: new URLSearchParams({
                     client_id: clientId,
@@ -323,23 +322,23 @@ export class AuthRouter extends BaseRouter {
             });
 
             // Fail fast if Discord rejected the token exchange (e.g., expired/used code)
-            if (tokenResponse.statusCode !== 200) {
-                this.bot.logger.api( `OAuth2 token exchange failed: HTTP ${tokenResponse.statusCode}`);
+            if (!tokenResponse.ok) {
+                this.bot.logger.api( `OAuth2 token exchange failed: HTTP ${tokenResponse.status}`);
                 this.#redirectToLogin(res, 'exchange_failed');
                 return;
             }
 
-            const oauthData = await tokenResponse.body.json() as {
+            const oauthData = await tokenResponse.json() as {
                 token_type: string;
                 access_token: string;
             };
 
-            const userResult = await undici.request('https://discord.com/api/users/@me', {
+            const userResult = await fetch('https://discord.com/api/users/@me', {
                 headers: { authorization: `${oauthData.token_type} ${oauthData.access_token}` },
             });
 
-            if (userResult.statusCode === 200) {
-                const user = await userResult.body.json() as { id: string };
+            if (userResult.ok) {
+                const user = await userResult.json() as { id: string };
 
                 if (this.bot.config.bot.admin.includes(user.id)) {
                     this.sessionManager.unblockIP(userIP);
