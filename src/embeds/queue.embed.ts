@@ -2,6 +2,9 @@ import { EmbedBuilder, HexColorString } from 'discord.js';
 import type { Bot } from '../@types/index.js';
 
 
+const QUEUE_PAGE_SIZE = 20;
+
+
 const addTrack = (bot: Bot, title: string, subtitle: string, url: string, thumbnail: string, lng?: string) => {
     const embed_ = new EmbedBuilder()
         .setColor(bot.config.bot.embedsColors.message as HexColorString | number)
@@ -37,4 +40,4 @@ const queue = (bot: Bot, description: string, repeatMode: string, lng?: string) 
     return embed_;
 };
 
-export { addTrack, addPlaylist, queue };
+export { addTrack, addPlaylist, queue, QUEUE_PAGE_SIZE };

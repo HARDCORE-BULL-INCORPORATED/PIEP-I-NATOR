@@ -29,5 +29,12 @@ export interface TrackPlayCount {
     title: string;
     url: string;
     count: number;
+    lastPlayedAt: number;
+}
+
+export interface TrackPlayEvent {
+    title: string;
+    url: string;
+    playedAt: number;
 }
 

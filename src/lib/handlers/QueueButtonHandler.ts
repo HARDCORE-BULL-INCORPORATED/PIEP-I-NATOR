@@ -1,6 +1,7 @@
 import { MessageFlags } from 'discord.js';
 import { ButtonsBuilder } from '../builders/ButtonsBuilder.js';
 import { embeds } from '../../embeds/index.js';
+import { QUEUE_PAGE_SIZE } from '../../embeds/queue.embed.js';
 import { PermissionManager } from '../PermissionManager.js';
 
 import type { Client, ButtonInteraction, GuildMember } from 'discord.js';
@@ -12,7 +13,6 @@ import type { Bot } from '../../@types/index.js';
  * Handler for queue-related button interactions
  */
 export class QueueButtonHandler {
-    private static readonly QUEUE_PAGE_SIZE = 5;
     private static getLoopModeLabel(bot: Bot, repeatMode: number, lng?: string): string {
         const modes = [
             bot.i18n.t('commands:REPEAT_MODE_OFF', { lng }),
@@ -148,8 +148,8 @@ export class QueueButtonHandler {
         if (!player.setting.queuePage) return;
 
         const page = player.setting.queuePage.curPage;
-        const startIdx = (page - 1) * this.QUEUE_PAGE_SIZE;
-        const endIdx = page * this.QUEUE_PAGE_SIZE;
+        const startIdx = (page - 1) * QUEUE_PAGE_SIZE;
+        const endIdx = page * QUEUE_PAGE_SIZE;
         const totalTracks = player.queue.tracks.length;
         const maxPage = player.setting.queuePage.maxPage;
 

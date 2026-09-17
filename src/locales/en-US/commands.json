@@ -66,6 +66,8 @@
   "MESSAGE_PLAYLAST_SUCCESS": "✅ The track is back in the queue",
   "CONFIG_QUEUE_DESCRIPTION": "Show current playlist",
   "CONFIG_QUEUE_USAGE": "queue",
+  "CONFIG_RECENTLY_PLAYED_DESCRIPTION": "Show the songs that were recently played on this server",
+  "CONFIG_RECENTLY_PLAYED_USAGE": "recentlyplayed",
   "CONFIG_REMOVE_DESCRIPTION": "Select a song to remove from the playlist",
   "CONFIG_REMOVE_USAGE": "remove <track number> [from to]",
   "CONFIG_REMOVE_OPTION_DESCRIPTION": "Track number",

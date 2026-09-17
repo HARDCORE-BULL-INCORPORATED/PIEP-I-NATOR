@@ -25,6 +25,14 @@ export enum QueueButtonId {
 }
 
 /**
+ * Recently played list pagination button IDs
+ */
+export enum RecentlyPlayedButtonId {
+    Previous = 'recent-prev',
+    Next = 'recent-next',
+}
+
+/**
  * Music save button IDs
  */
 export enum MusicButtonId {

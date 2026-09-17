@@ -4,6 +4,7 @@ import { SkipCommand } from './SkipCommand.js';
 import { HelpCommand } from './HelpCommand.js';
 import { NowPlayingCommand } from './NowPlayingCommand.js';
 import { MostPlayedCommand } from './MostPlayedCommand.js';
+import { RecentlyPlayedCommand } from './RecentlyPlayedCommand.js';
 import { StopCommand } from './StopCommand.js';
 import { ResumeCommand } from './ResumeCommand.js';
 import { ShuffleCommand } from './ShuffleCommand.js';
@@ -63,6 +64,7 @@ export function registerAllCommands(registry: CommandRegistry, bot: Bot): void {
     registry.register(new SkipCommand(), bot);
     registry.register(new NowPlayingCommand(), bot);
     registry.register(new MostPlayedCommand(), bot);
+    registry.register(new RecentlyPlayedCommand(), bot);
     registry.register(new StopCommand(), bot);
     registry.register(new ResumeCommand(), bot);
     registry.register(new ShuffleCommand(), bot);

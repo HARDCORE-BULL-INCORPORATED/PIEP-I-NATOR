@@ -139,8 +139,20 @@ export class DatabaseManager {
                 title TEXT NOT NULL,
                 url TEXT NOT NULL,
                 count INTEGER NOT NULL DEFAULT 0,
+                last_played_at INTEGER NOT NULL DEFAULT 0,
                 PRIMARY KEY (guild_id, title, url)
             );
+
+            CREATE TABLE IF NOT EXISTS track_play_history (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                guild_id TEXT NOT NULL,
+                title TEXT NOT NULL,
+                url TEXT NOT NULL,
+                played_at INTEGER NOT NULL
+            );
+
+            CREATE INDEX IF NOT EXISTS idx_track_play_history_guild_time
+                ON track_play_history (guild_id, played_at DESC, id DESC);
         `);
 
         const columns = this.db.prepare('PRAGMA table_info(playlists)').all() as Array<{ name: string }>;
@@ -148,6 +160,13 @@ export class DatabaseManager {
 
         if (!hasIsM3u) {
             this.db.run('ALTER TABLE playlists ADD COLUMN is_m3u INTEGER DEFAULT 0;');
+        }
+
+        const playCountColumns = this.db.prepare('PRAGMA table_info(track_play_counts)').all() as Array<{ name: string }>;
+        const hasLastPlayedAt = playCountColumns.some((col) => col.name === 'last_played_at');
+
+        if (!hasLastPlayedAt) {
+            this.db.run('ALTER TABLE track_play_counts ADD COLUMN last_played_at INTEGER NOT NULL DEFAULT 0;');
         }
     }
 }

@@ -12,6 +12,7 @@ import {
     playlistOverwriteButtons,
 } from './playlist.embed.js';
 import { addTrack, addPlaylist, queue } from './queue.embed.js';
+import { recentlyPlayed, recentlyPlayedButtons } from './recentlyPlayed.embed.js';
 import { mostPlayed } from './mostPlayed.embed.js';
 import { removeList, removeTrack } from './remove.embed.js';
 import { save } from './save.embed.js';
@@ -44,6 +45,8 @@ const embeds = {
     playlistOverwrite,
     playlistOverwriteButtons,
     queue,
+    recentlyPlayed,
+    recentlyPlayedButtons,
     removeList,
     removeTrack,
     save,

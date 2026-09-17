@@ -42,8 +42,12 @@ export class MostPlayedCommand extends BaseCommand {
             return;
         }
 
+        const totalPlays = guildId
+            ? bot.playCountManager?.getTotalPlays(guildId) ?? 0
+            : 0;
+
         await context.reply({
-            embeds: [embeds.mostPlayed(bot, entries, context.language)]
+            embeds: [embeds.mostPlayed(bot, entries, totalPlays, context.language)]
         });
     }
 }

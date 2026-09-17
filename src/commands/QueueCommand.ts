@@ -3,6 +3,7 @@ import i18next from 'i18next';
 import { BaseCommand } from './base/BaseCommand.js';
 import { CommandCategory } from '../@types/index.js';
 import { embeds } from '../embeds/index.js';
+import { QUEUE_PAGE_SIZE } from '../embeds/queue.embed.js';
 import { ButtonsBuilder } from '../lib/builders/ButtonsBuilder.js';
 
 import type { Client } from 'discord.js';
@@ -40,16 +41,16 @@ export class QueueCommand extends BaseCommand {
             } catch (_) { }
         }
 
-        // Initialize queue page (5 songs per page)
+        // Initialize queue page (20 songs per page)
         player.setting.queuePage = {
-            maxPage: Math.max(1, Math.ceil(player.queue.tracks.length / 5)),
+            maxPage: Math.max(1, Math.ceil(player.queue.tracks.length / QUEUE_PAGE_SIZE)),
             curPage: 1,
             msg: null
         };
 
         const page = player.setting.queuePage.curPage;
-        const startIdx = (page - 1) * 5;
-        const endIdx = page * 5;
+        const startIdx = (page - 1) * QUEUE_PAGE_SIZE;
+        const endIdx = page * QUEUE_PAGE_SIZE;
 
         const queueTracks = player.queue.tracks.slice(startIdx, endIdx);
         const description = this.#buildQueueDescription(context, player, queueTracks, startIdx, page, player.setting.queuePage.maxPage, player.queue.tracks.length);
