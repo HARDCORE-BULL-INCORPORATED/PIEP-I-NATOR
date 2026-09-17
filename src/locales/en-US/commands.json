@@ -39,6 +39,8 @@
   "CONFIG_MOVE_USAGE": "move <index1> <index2>",
   "CONFIG_MOVE_OPTION_DESCRIPTION": "Track position 1",
   "CONFIG_MOVE_OPTION_DESCRIPTION_2": "Track position 2",
+  "CONFIG_MOEE_DESCRIPTION": "Show how many songs were listened to in this session and the last 24 hours",
+  "CONFIG_MOEE_USAGE": "moee",
   "CONFIG_MOST_PLAYED_DESCRIPTION": "Show the most played songs on this server",
   "CONFIG_MOST_PLAYED_USAGE": "mostplayed",
   "CONFIG_NODE_DESCRIPTION": "Show the status of active nodes",

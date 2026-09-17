@@ -27,6 +27,9 @@ export class TrackStartEvent extends BaseLavaSharkEvent<'trackStart'> {
         const track = player.current;
         if (!track) return;
 
+        // The first track after an empty queue starts a new listening session
+        player.sessionStartedAt ??= Date.now();
+
         // Count the play before the dashboard reads the updated count
         if (!isRadioTrack(track)) {
             bot.playCountManager?.recordPlay(player.guildId, track.title, track.uri);

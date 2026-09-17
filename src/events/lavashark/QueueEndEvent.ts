@@ -16,6 +16,9 @@ export class QueueEndEvent extends BaseLavaSharkEvent<'queueEnd'> {
     }
 
     public async execute(bot: Bot, client: Client, player: Player): Promise<void> {
+        // The listening session ends with the queue
+        player.sessionStartedAt = undefined;
+
         // Set idle voice status or clear status when queue ends
         if (player.voiceChannelId) {
             if (!bot.config.bot.autoLeave.enabled && bot.config.bot.voiceStatusIdleText) {

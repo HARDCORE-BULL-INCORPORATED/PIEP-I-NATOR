@@ -155,6 +155,30 @@ export class PlayCountManager {
     }
 
     /**
+     * Count history entries of a guild that happened at or after the given timestamp.
+     * Returns 0 when the database is unavailable.
+     */
+    public getPlayHistoryCountSince(guildId: string, since: number): number {
+        const db = this.bot.databaseManager?.getDatabase();
+        if (!db) {
+            return 0;
+        }
+
+        try {
+            const row = db.prepare(`
+                SELECT COUNT(*) AS total
+                FROM track_play_history
+                WHERE guild_id = ? AND played_at >= ?
+            `).get(guildId, since) as { total: number } | null;
+
+            return row?.total ?? 0;
+        } catch (error) {
+            this.bot.logger.error(this.bot.shardId, `[PlayCountManager] Failed to count play history since ${since} for guild ${guildId}: ${error}`);
+            return 0;
+        }
+    }
+
+    /**
      * Get one page of a guild's play history, newest first.
      * The `before` timestamp freezes the history so pages stay stable while new tracks start.
      * Returns an empty list when the database is unavailable.

@@ -16,6 +16,9 @@ export class PlayerDestroyEvent extends BaseLavaSharkEvent<'playerDestroy'> {
     }
 
     public async execute(bot: Bot, client: Client, player: Player): Promise<void> {
+        // The listening session ends when the player is destroyed
+        player.sessionStartedAt = undefined;
+
         // Clear any pending timeouts
         if (player.autoLeaveTimeout) {
             clearTimeout(player.autoLeaveTimeout);

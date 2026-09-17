@@ -45,6 +45,7 @@ declare module 'lavashark' {
         djUsers?: Set<string>;              // Dynamic DJ users for this guild
         leaveTimeout?: NodeJS.Timeout;      // Timeout for DJ leave channel
         autoLeaveTimeout?: NodeJS.Timeout;  // Timeout for auto leave channel
+        sessionStartedAt?: number;          // Start of the current listening session, reset when the playback run ends
     }
 
     export interface Track {

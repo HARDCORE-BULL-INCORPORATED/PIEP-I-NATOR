@@ -14,6 +14,7 @@ import {
 import { addTrack, addPlaylist, queue } from './queue.embed.js';
 import { recentlyPlayed, recentlyPlayedButtons } from './recentlyPlayed.embed.js';
 import { mostPlayed } from './mostPlayed.embed.js';
+import { moee } from './moee.embed.js';
 import { removeList, removeTrack } from './remove.embed.js';
 import { save } from './save.embed.js';
 import { server } from './server.embed.js';
@@ -32,6 +33,7 @@ const embeds = {
     filterMsg,
     help,
     maintainNotice,
+    moee,
     mostPlayed,
     nodeDisconnected,
     nodesStatus,
