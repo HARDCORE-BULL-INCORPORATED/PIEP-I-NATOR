@@ -1,4 +1,4 @@
-import type { Client } from 'discord.js';
+import type { AutocompleteInteraction, Client } from 'discord.js';
 
 import type { CommandContext } from './CommandContext.js';
 import type { Bot, CommandMetadata } from '../../@types/index.js';
@@ -45,5 +45,16 @@ export abstract class BaseCommand {
                 bot.logger.error( bot.shardId, `Failed to send error message: ${replyError}`);
             }
         }
+    }
+
+    /**
+     * Respond to an autocomplete interaction.
+     * Commands with autocomplete options override this method.
+     * @param _bot - Bot instance
+     * @param _client - Discord client
+     * @param interaction - Autocomplete interaction to answer
+     */
+    public async autocomplete(_bot: Bot, _client: Client, interaction: AutocompleteInteraction): Promise<void> {
+        await interaction.respond([]);
     }
 }

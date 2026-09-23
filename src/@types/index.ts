@@ -24,6 +24,7 @@ import type { PlayCountManager } from '../lib/PlayCountManager.js';
 export * from './ButtonIds.types.js';
 export * from './BaseCommand.types.js';
 export * from './Database.types.js';
+export * from './Filter.types.js';
 
 
 declare module 'discord.js' {

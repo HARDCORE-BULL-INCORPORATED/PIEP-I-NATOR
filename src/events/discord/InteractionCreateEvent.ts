@@ -16,7 +16,7 @@ import { LanguageSelectHandler } from '../../lib/handlers/LanguageSelectHandler.
 import { NodeSelectHandler } from '../../lib/handlers/NodeSelectHandler.js';
 import { DashboardButtonId, QueueButtonId, MusicButtonId } from '../../@types/index.js';
 
-import type { Client } from 'discord.js';
+import type { AutocompleteInteraction, Client } from 'discord.js';
 import type { Bot } from '../../@types/index.js';
 
 
@@ -42,6 +42,9 @@ export class InteractionCreateEvent extends BaseDiscordEvent<Events.InteractionC
         else if (interaction.isStringSelectMenu()) {
             await LanguageSelectHandler.handle(bot, client, interaction);
             await NodeSelectHandler.handle(bot, client, interaction);
+        }
+        else if (interaction.isAutocomplete()) {
+            await this.#handleAutocomplete(bot, client, interaction);
         }
         else if (interaction.isCommand() && interaction.inGuild() && interaction.isChatInputCommand()) {
             await this.#handleCommandInteraction(bot, client, interaction);
@@ -157,6 +160,27 @@ export class InteractionCreateEvent extends BaseDiscordEvent<Events.InteractionC
         }
         catch (error) {
             bot.logger.error( bot.shardId, '[interactionCreate] Dashboard error: ' + error);
+        }
+    }
+
+    /**
+     * Handle autocomplete interactions
+     * @private
+     */
+    async #handleAutocomplete(bot: Bot, client: Client, interaction: AutocompleteInteraction): Promise<void> {
+        const cmd = client.commands.get(interaction.commandName);
+
+        if (!cmd) {
+            await interaction.respond([]).catch(() => {});
+            return;
+        }
+
+        try {
+            await cmd.autocomplete(bot, client, interaction);
+        }
+        catch (error) {
+            bot.logger.error( bot.shardId, `[interactionCreate] Error handling autocomplete for /${interaction.commandName}: ${error}`);
+            await interaction.respond([]).catch(() => {});
         }
     }
 
