@@ -11,6 +11,7 @@ export const GENRE_FILTERS: FilterDefinition[] = [
     {
         name: 'lofi',
         label: 'Lo-Fi',
+        description: 'Chill lo-fi: soft, slow and slightly muffled.',
         aliases: ['chill'],
         category: FilterCategory.GENRE,
         options: {
@@ -22,6 +23,7 @@ export const GENRE_FILTERS: FilterDefinition[] = [
     {
         name: 'rock',
         label: 'Rock',
+        description: 'Guitar-forward rock curve with light drive.',
         aliases: [],
         category: FilterCategory.GENRE,
         options: {
@@ -32,6 +34,7 @@ export const GENRE_FILTERS: FilterDefinition[] = [
     {
         name: 'metal',
         label: 'Metal',
+        description: 'Aggressive metal curve with heavy distortion.',
         aliases: ['metalcore'],
         category: FilterCategory.GENRE,
         options: {
@@ -42,6 +45,7 @@ export const GENRE_FILTERS: FilterDefinition[] = [
     {
         name: 'punk',
         label: 'Punk',
+        description: 'Fast punk curve with a gritty edge.',
         aliases: ['punkrock'],
         category: FilterCategory.GENRE,
         options: {
@@ -53,6 +57,7 @@ export const GENRE_FILTERS: FilterDefinition[] = [
     {
         name: 'jazz',
         label: 'Jazz',
+        description: 'Warm jazz balance with smooth mids.',
         aliases: ['jazzy'],
         category: FilterCategory.GENRE,
         options: {
@@ -62,6 +67,7 @@ export const GENRE_FILTERS: FilterDefinition[] = [
     {
         name: 'classical',
         label: 'Classical',
+        description: 'Natural classical balance with gentle warmth.',
         aliases: ['classic'],
         category: FilterCategory.GENRE,
         options: {
@@ -71,6 +77,7 @@ export const GENRE_FILTERS: FilterDefinition[] = [
     {
         name: 'country',
         label: 'Country',
+        description: 'Bright country curve with warm lows.',
         aliases: [],
         category: FilterCategory.GENRE,
         options: {
@@ -80,6 +87,7 @@ export const GENRE_FILTERS: FilterDefinition[] = [
     {
         name: 'reggae',
         label: 'Reggae',
+        description: 'Laid-back reggae with rolled-off highs.',
         aliases: [],
         category: FilterCategory.GENRE,
         options: {
@@ -90,6 +98,7 @@ export const GENRE_FILTERS: FilterDefinition[] = [
     {
         name: 'hiphop',
         label: 'Hip-Hop',
+        description: 'Bass-forward hip-hop curve with clear vocals.',
         aliases: ['rap'],
         category: FilterCategory.GENRE,
         options: {
@@ -99,6 +108,7 @@ export const GENRE_FILTERS: FilterDefinition[] = [
     {
         name: 'kpop',
         label: 'K-Pop',
+        description: 'Bright K-pop curve with punchy bass.',
         aliases: [],
         category: FilterCategory.GENRE,
         options: {
@@ -108,6 +118,7 @@ export const GENRE_FILTERS: FilterDefinition[] = [
     {
         name: 'jpop',
         label: 'J-Pop',
+        description: 'Bright J-pop curve with a slightly raised pitch.',
         aliases: [],
         category: FilterCategory.GENRE,
         options: {
@@ -118,6 +129,7 @@ export const GENRE_FILTERS: FilterDefinition[] = [
     {
         name: 'anime',
         label: 'Anime',
+        description: 'Energetic anime opening curve, faster and brighter.',
         aliases: ['weeb'],
         category: FilterCategory.GENRE,
         options: {
@@ -128,6 +140,7 @@ export const GENRE_FILTERS: FilterDefinition[] = [
     {
         name: 'pop',
         label: 'Pop',
+        description: 'Polished pop curve with balanced bass and treble.',
         aliases: [],
         category: FilterCategory.GENRE,
         options: {
@@ -137,6 +150,7 @@ export const GENRE_FILTERS: FilterDefinition[] = [
     {
         name: 'rnb',
         label: 'R&B',
+        description: 'Smooth R&B with warm bass and silky highs.',
         aliases: ['r&b', 'randb'],
         category: FilterCategory.GENRE,
         options: {
@@ -146,6 +160,7 @@ export const GENRE_FILTERS: FilterDefinition[] = [
     {
         name: 'funk',
         label: 'Funk',
+        description: 'Funky curve with punchy bass and bright horns.',
         aliases: ['funky'],
         category: FilterCategory.GENRE,
         options: {
@@ -155,6 +170,7 @@ export const GENRE_FILTERS: FilterDefinition[] = [
     {
         name: 'disco',
         label: 'Disco',
+        description: 'Classic disco sparkle with rotating energy.',
         aliases: ['discotheque'],
         category: FilterCategory.GENRE,
         options: {
@@ -165,6 +181,7 @@ export const GENRE_FILTERS: FilterDefinition[] = [
     {
         name: 'acoustic',
         label: 'Acoustic',
+        description: 'Gentle acoustic curve that keeps the mids natural.',
         aliases: [],
         category: FilterCategory.GENRE,
         options: {
@@ -174,6 +191,7 @@ export const GENRE_FILTERS: FilterDefinition[] = [
     {
         name: 'gaming',
         label: 'Gaming',
+        description: 'Wide gaming curve with rotation and subtle tremolo.',
         aliases: ['game'],
         category: FilterCategory.GENRE,
         options: {
@@ -185,6 +203,7 @@ export const GENRE_FILTERS: FilterDefinition[] = [
     {
         name: 'blues',
         label: 'Blues',
+        description: 'Warm blues curve with a soft lowpass.',
         aliases: ['bluesy'],
         category: FilterCategory.GENRE,
         options: {
@@ -195,6 +214,7 @@ export const GENRE_FILTERS: FilterDefinition[] = [
     {
         name: 'soul',
         label: 'Soul',
+        description: 'Rich soul curve with warm lows and smooth highs.',
         aliases: ['soulful'],
         category: FilterCategory.GENRE,
         options: {
@@ -204,6 +224,7 @@ export const GENRE_FILTERS: FilterDefinition[] = [
     {
         name: 'gospel',
         label: 'Gospel',
+        description: 'Uplifting gospel curve with clear mids.',
         aliases: ['choir'],
         category: FilterCategory.GENRE,
         options: {
@@ -213,6 +234,7 @@ export const GENRE_FILTERS: FilterDefinition[] = [
     {
         name: 'folk',
         label: 'Folk',
+        description: 'Natural folk balance with a light warmth.',
         aliases: ['folksy'],
         category: FilterCategory.GENRE,
         options: {
@@ -222,6 +244,7 @@ export const GENRE_FILTERS: FilterDefinition[] = [
     {
         name: 'indie',
         label: 'Indie',
+        description: 'Indie rock curve with a soft, warm top end.',
         aliases: ['indierock'],
         category: FilterCategory.GENRE,
         options: {
@@ -232,6 +255,7 @@ export const GENRE_FILTERS: FilterDefinition[] = [
     {
         name: 'latin',
         label: 'Latin',
+        description: 'Energetic latin curve with a light tremolo.',
         aliases: ['latino'],
         category: FilterCategory.GENRE,
         options: {
@@ -242,6 +266,7 @@ export const GENRE_FILTERS: FilterDefinition[] = [
     {
         name: 'afrobeat',
         label: 'Afrobeat',
+        description: 'Afrobeat groove with warm bass and a soft tremolo.',
         aliases: ['afro'],
         category: FilterCategory.GENRE,
         options: {

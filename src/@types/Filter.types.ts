@@ -20,6 +20,8 @@ export interface FilterDefinition {
     name: string;
     /** Human readable name shown in menus and replies */
     label: string;
+    /** Short plain-language description of what the filter does */
+    description: string;
     /** Alternative names accepted by commands and autocomplete */
     aliases: string[];
     /** Category the filter belongs to */

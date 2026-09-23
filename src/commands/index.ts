@@ -24,6 +24,7 @@ import { StatusCommand } from './StatusCommand.js';
 import { NodeStatusCommand } from './NodeStatusCommand.js';
 import { QueueCommand } from './QueueCommand.js';
 import { FilterCommand } from './FilterCommand.js';
+import { FiltersCommand } from './FiltersCommand.js';
 import { DashboardCommand } from './DashboardCommand.js';
 import { VolumeCommand } from './VolumeCommand.js';
 import { SearchCommand } from './SearchCommand.js';
@@ -79,6 +80,7 @@ export function registerAllCommands(registry: CommandRegistry, bot: Bot): void {
     registry.register(new LeaveCommand(), bot);
     registry.register(new QueueCommand(), bot);
     registry.register(new FilterCommand(), bot);
+    registry.register(new FiltersCommand(), bot);
     registry.register(new DashboardCommand(), bot);
     registry.register(new VolumeCommand(), bot);
     registry.register(new SearchCommand(), bot);

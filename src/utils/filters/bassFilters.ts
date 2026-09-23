@@ -11,6 +11,7 @@ export const BASS_FILTERS: FilterDefinition[] = [
     {
         name: 'bass',
         label: 'Bass',
+        description: 'A gentle low-end lift that keeps the mix balanced.',
         aliases: [],
         category: FilterCategory.BASS,
         options: {
@@ -20,6 +21,7 @@ export const BASS_FILTERS: FilterDefinition[] = [
     {
         name: 'bassboost',
         label: 'Bass Boost',
+        description: 'Classic bass boost with softened mids for a warm low end.',
         aliases: ['bb', 'bassplus'],
         category: FilterCategory.BASS,
         options: {
@@ -29,6 +31,7 @@ export const BASS_FILTERS: FilterDefinition[] = [
     {
         name: 'extreme',
         label: 'Extreme Bass',
+        description: 'Strong bass push with the highs pulled back.',
         aliases: ['extremebass', 'xbass'],
         category: FilterCategory.BASS,
         options: {
@@ -38,6 +41,7 @@ export const BASS_FILTERS: FilterDefinition[] = [
     {
         name: 'insane',
         label: 'Insane Bass',
+        description: 'Near-maximum bass with recessed mids and highs.',
         aliases: ['insanebass'],
         category: FilterCategory.BASS,
         options: {
@@ -47,6 +51,7 @@ export const BASS_FILTERS: FilterDefinition[] = [
     {
         name: 'rebass',
         label: 'Rebassed',
+        description: 'Rebassed style: max sub-bass with suppressed highs.',
         aliases: ['rebassed'],
         category: FilterCategory.BASS,
         options: {
@@ -57,6 +62,7 @@ export const BASS_FILTERS: FilterDefinition[] = [
     {
         name: 'subonly',
         label: 'Sub Only',
+        description: 'Only the sub frequencies survive; everything above 100 Hz is muted.',
         aliases: ['sub', 'subs', 'subbass'],
         category: FilterCategory.BASS,
         options: {
@@ -67,6 +73,7 @@ export const BASS_FILTERS: FilterDefinition[] = [
     {
         name: 'subboost',
         label: 'Sub Boost',
+        description: 'Adds weight to the sub range without touching the rest.',
         aliases: ['sb'],
         category: FilterCategory.BASS,
         options: {
@@ -76,6 +83,7 @@ export const BASS_FILTERS: FilterDefinition[] = [
     {
         name: 'purebass',
         label: 'Pure Bass',
+        description: 'Focused boost on the 25-160 Hz range.',
         aliases: ['pure'],
         category: FilterCategory.BASS,
         options: {
@@ -85,6 +93,7 @@ export const BASS_FILTERS: FilterDefinition[] = [
     {
         name: 'megabass',
         label: 'Mega Bass',
+        description: 'Big bass boost with a clean top end.',
         aliases: ['mega'],
         category: FilterCategory.BASS,
         options: {
@@ -94,6 +103,7 @@ export const BASS_FILTERS: FilterDefinition[] = [
     {
         name: 'bassmachine',
         label: 'Bass Machine',
+        description: 'Punchy bass boost with a slow tremolo wobble.',
         aliases: ['machine'],
         category: FilterCategory.BASS,
         options: {
@@ -104,6 +114,7 @@ export const BASS_FILTERS: FilterDefinition[] = [
     {
         name: 'boost',
         label: 'Boost',
+        description: 'Smile-curve boost for bass and treble.',
         aliases: ['amplify'],
         category: FilterCategory.BASS,
         options: {
@@ -113,6 +124,7 @@ export const BASS_FILTERS: FilterDefinition[] = [
     {
         name: 'superbass',
         label: 'Super Bass',
+        description: 'Heavy bass boost with a slight high-end dip.',
         aliases: ['super'],
         category: FilterCategory.BASS,
         options: {
@@ -122,6 +134,7 @@ export const BASS_FILTERS: FilterDefinition[] = [
     {
         name: 'ultrabass',
         label: 'Ultra Bass',
+        description: 'The hardest full-range bass boost in the catalog.',
         aliases: ['ultra'],
         category: FilterCategory.BASS,
         options: {
@@ -132,6 +145,7 @@ export const BASS_FILTERS: FilterDefinition[] = [
     {
         name: 'basshead',
         label: 'Bass Head',
+        description: 'Loud bass boost that still keeps some high-end detail.',
         aliases: ['head'],
         category: FilterCategory.BASS,
         options: {
@@ -141,6 +155,7 @@ export const BASS_FILTERS: FilterDefinition[] = [
     {
         name: 'hardbass',
         label: 'Hard Bass',
+        description: 'Bass boost plus soft distortion for a gritty edge.',
         aliases: ['hard'],
         category: FilterCategory.BASS,
         options: {
@@ -151,6 +166,7 @@ export const BASS_FILTERS: FilterDefinition[] = [
     {
         name: 'overdrive',
         label: 'Overdrive',
+        description: 'Overdriven low end with mild distortion.',
         aliases: ['od'],
         category: FilterCategory.BASS,
         options: {
@@ -161,6 +177,7 @@ export const BASS_FILTERS: FilterDefinition[] = [
     {
         name: 'rumble',
         label: 'Rumble',
+        description: 'Sub-heavy rumble with the highs rolled off.',
         aliases: ['rumbl'],
         category: FilterCategory.BASS,
         options: {
@@ -171,6 +188,7 @@ export const BASS_FILTERS: FilterDefinition[] = [
     {
         name: 'earthquake',
         label: 'Earthquake',
+        description: 'Max sub-bass with a low tremolo shake.',
         aliases: ['quake'],
         category: FilterCategory.BASS,
         options: {
@@ -182,6 +200,7 @@ export const BASS_FILTERS: FilterDefinition[] = [
     {
         name: 'lowend',
         label: 'Low End',
+        description: 'Moderate low-end lift without the boom.',
         aliases: ['lows'],
         category: FilterCategory.BASS,
         options: {
@@ -191,6 +210,7 @@ export const BASS_FILTERS: FilterDefinition[] = [
     {
         name: 'deepbass',
         label: 'Deep Bass',
+        description: 'Deep bass boost with a slightly lowered pitch.',
         aliases: ['dbass'],
         category: FilterCategory.BASS,
         options: {
@@ -201,6 +221,7 @@ export const BASS_FILTERS: FilterDefinition[] = [
     {
         name: 'wobble',
         label: 'Wobble',
+        description: 'Wobbling bass with a slow tremolo and lowpass.',
         aliases: ['wob'],
         category: FilterCategory.BASS,
         options: {
@@ -212,6 +233,7 @@ export const BASS_FILTERS: FilterDefinition[] = [
     {
         name: 'bassdrop',
         label: 'Bass Drop',
+        description: 'Massive sub-bass with a steep high-end cut.',
         aliases: ['drop'],
         category: FilterCategory.BASS,
         options: {
@@ -222,6 +244,7 @@ export const BASS_FILTERS: FilterDefinition[] = [
     {
         name: 'subwoofer',
         label: 'Subwoofer',
+        description: 'Pure subwoofer: 25-63 Hz only, everything else muted.',
         aliases: ['woofer'],
         category: FilterCategory.BASS,
         options: {
@@ -232,6 +255,7 @@ export const BASS_FILTERS: FilterDefinition[] = [
     {
         name: 'bassline',
         label: 'Bassline',
+        description: 'Even boost across the bass range for basslines.',
         aliases: ['line'],
         category: FilterCategory.BASS,
         options: {
@@ -241,6 +265,7 @@ export const BASS_FILTERS: FilterDefinition[] = [
     {
         name: 'punch',
         label: 'Punch',
+        description: 'Tight kick-drum punch around 63-160 Hz.',
         aliases: ['punchy'],
         category: FilterCategory.BASS,
         options: {

@@ -1,5 +1,6 @@
 import { connected, dashboard, disconnect } from './dashboard.embed.js';
 import { blacklist, blacklistList } from './blacklist.embed.js';
+import { filterList, filterDetail } from './filter.embed.js';
 import { filterMsg, help, helpList, textMsg, textErrorMsg, textSuccessMsg, textWarningMsg } from './msg.embed.js';
 import { ping } from './ping.embed.js';
 import {
@@ -30,6 +31,8 @@ const embeds = {
     connected,
     dashboard,
     disconnect,
+    filterDetail,
+    filterList,
     filterMsg,
     help,
     helpList,

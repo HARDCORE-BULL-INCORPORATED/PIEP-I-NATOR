@@ -11,6 +11,7 @@ export const ELECTRONIC_FILTERS: FilterDefinition[] = [
     {
         name: 'techno',
         label: 'Techno',
+        description: 'Driving techno curve with steady bass and crisp highs.',
         aliases: [],
         category: FilterCategory.ELECTRONIC,
         options: {
@@ -20,6 +21,7 @@ export const ELECTRONIC_FILTERS: FilterDefinition[] = [
     {
         name: 'house',
         label: 'House',
+        description: 'Warm four-on-the-floor house balance.',
         aliases: [],
         category: FilterCategory.ELECTRONIC,
         options: {
@@ -29,6 +31,7 @@ export const ELECTRONIC_FILTERS: FilterDefinition[] = [
     {
         name: 'trance',
         label: 'Trance',
+        description: 'Airy trance lift with sparkling highs.',
         aliases: [],
         category: FilterCategory.ELECTRONIC,
         options: {
@@ -38,6 +41,7 @@ export const ELECTRONIC_FILTERS: FilterDefinition[] = [
     {
         name: 'edm',
         label: 'EDM',
+        description: 'Festival EDM curve with strong bass and bright leads.',
         aliases: ['dance'],
         category: FilterCategory.ELECTRONIC,
         options: {
@@ -47,6 +51,7 @@ export const ELECTRONIC_FILTERS: FilterDefinition[] = [
     {
         name: 'dubstep',
         label: 'Dubstep',
+        description: 'Heavy wobbling bass with distortion.',
         aliases: ['dub'],
         category: FilterCategory.ELECTRONIC,
         options: {
@@ -58,6 +63,7 @@ export const ELECTRONIC_FILTERS: FilterDefinition[] = [
     {
         name: 'drumandbass',
         label: 'Drum & Bass',
+        description: 'Fast bass-heavy drum & bass curve.',
         aliases: ['dnb', 'd&b'],
         category: FilterCategory.ELECTRONIC,
         options: {
@@ -68,6 +74,7 @@ export const ELECTRONIC_FILTERS: FilterDefinition[] = [
     {
         name: 'hardstyle',
         label: 'Hardstyle',
+        description: 'Hard-hitting bass with distorted kicks.',
         aliases: [],
         category: FilterCategory.ELECTRONIC,
         options: {
@@ -78,6 +85,7 @@ export const ELECTRONIC_FILTERS: FilterDefinition[] = [
     {
         name: 'hardcore',
         label: 'Hardcore',
+        description: 'Faster, distorted and aggressive hardcore sound.',
         aliases: ['hc'],
         category: FilterCategory.ELECTRONIC,
         options: {
@@ -89,6 +97,7 @@ export const ELECTRONIC_FILTERS: FilterDefinition[] = [
     {
         name: 'rave',
         label: 'Rave',
+        description: 'Rotating rave energy with bright highs.',
         aliases: ['raving'],
         category: FilterCategory.ELECTRONIC,
         options: {
@@ -99,6 +108,7 @@ export const ELECTRONIC_FILTERS: FilterDefinition[] = [
     {
         name: 'synthwave',
         label: 'Synthwave',
+        description: 'Warm synthwave curve with slightly lowered pitch.',
         aliases: ['outrun'],
         category: FilterCategory.ELECTRONIC,
         options: {
@@ -109,6 +119,7 @@ export const ELECTRONIC_FILTERS: FilterDefinition[] = [
     {
         name: 'phonk',
         label: 'Phonk',
+        description: 'Dark, slowed phonk with heavy sub-bass.',
         aliases: [],
         category: FilterCategory.ELECTRONIC,
         options: {
@@ -120,6 +131,7 @@ export const ELECTRONIC_FILTERS: FilterDefinition[] = [
     {
         name: 'trap',
         label: 'Trap',
+        description: 'Deep 808-style bass with a subtle tremolo.',
         aliases: [],
         category: FilterCategory.ELECTRONIC,
         options: {
@@ -130,6 +142,7 @@ export const ELECTRONIC_FILTERS: FilterDefinition[] = [
     {
         name: 'futurebass',
         label: 'Future Bass',
+        description: 'Bright future bass with a wobbling top end.',
         aliases: ['future'],
         category: FilterCategory.ELECTRONIC,
         options: {
@@ -140,6 +153,7 @@ export const ELECTRONIC_FILTERS: FilterDefinition[] = [
     {
         name: 'bigroom',
         label: 'Big Room',
+        description: 'Big room curve with a wide, bright top end.',
         aliases: ['bigroomhouse'],
         category: FilterCategory.ELECTRONIC,
         options: {
@@ -149,6 +163,7 @@ export const ELECTRONIC_FILTERS: FilterDefinition[] = [
     {
         name: 'deephouse',
         label: 'Deep House',
+        description: 'Smooth deep house with rolled-off highs.',
         aliases: ['dh'],
         category: FilterCategory.ELECTRONIC,
         options: {
@@ -159,6 +174,7 @@ export const ELECTRONIC_FILTERS: FilterDefinition[] = [
     {
         name: 'electro',
         label: 'Electro',
+        description: 'Gritty electro curve with mild distortion.',
         aliases: ['electrohouse'],
         category: FilterCategory.ELECTRONIC,
         options: {
@@ -170,6 +186,7 @@ export const ELECTRONIC_FILTERS: FilterDefinition[] = [
     {
         name: 'gabber',
         label: 'Gabber',
+        description: 'Fast, hard and heavily distorted gabber.',
         aliases: ['gabba'],
         category: FilterCategory.ELECTRONIC,
         options: {
@@ -181,6 +198,7 @@ export const ELECTRONIC_FILTERS: FilterDefinition[] = [
     {
         name: 'breakcore',
         label: 'Breakcore',
+        description: 'Fast breakcore with aggressive distortion.',
         aliases: ['breaks'],
         category: FilterCategory.ELECTRONIC,
         options: {
@@ -192,6 +210,7 @@ export const ELECTRONIC_FILTERS: FilterDefinition[] = [
     {
         name: 'jungle',
         label: 'Jungle',
+        description: 'Fast jungle breakbeat curve with deep bass.',
         aliases: ['junglist'],
         category: FilterCategory.ELECTRONIC,
         options: {
@@ -202,6 +221,7 @@ export const ELECTRONIC_FILTERS: FilterDefinition[] = [
     {
         name: 'psytrance',
         label: 'Psytrance',
+        description: 'Hypnotic psytrance with a pulsing tremolo.',
         aliases: ['psy'],
         category: FilterCategory.ELECTRONIC,
         options: {
@@ -212,6 +232,7 @@ export const ELECTRONIC_FILTERS: FilterDefinition[] = [
     {
         name: 'acid',
         label: 'Acid',
+        description: 'Squelchy acid curve with vibrato and drive.',
         aliases: ['acidhouse'],
         category: FilterCategory.ELECTRONIC,
         options: {
@@ -223,6 +244,7 @@ export const ELECTRONIC_FILTERS: FilterDefinition[] = [
     {
         name: 'chiptune',
         label: 'Chiptune',
+        description: '8-bit style: bright, gritty and slightly higher pitched.',
         aliases: ['8bit', 'gameboy'],
         category: FilterCategory.ELECTRONIC,
         options: {
@@ -234,6 +256,7 @@ export const ELECTRONIC_FILTERS: FilterDefinition[] = [
     {
         name: 'retro',
         label: 'Retro',
+        description: 'Retro 80s curve with a warm lowpass.',
         aliases: ['80s', 'retrowave'],
         category: FilterCategory.ELECTRONIC,
         options: {
@@ -245,6 +268,7 @@ export const ELECTRONIC_FILTERS: FilterDefinition[] = [
     {
         name: 'garage',
         label: 'UK Garage',
+        description: 'UK garage swing with a soft lowpass.',
         aliases: ['ukgarage'],
         category: FilterCategory.ELECTRONIC,
         options: {
@@ -256,6 +280,7 @@ export const ELECTRONIC_FILTERS: FilterDefinition[] = [
     {
         name: 'club',
         label: 'Club',
+        description: 'Club-ready curve with a slow rotation.',
         aliases: ['clubmix'],
         category: FilterCategory.ELECTRONIC,
         options: {

@@ -4,6 +4,25 @@ import type { DistortionOptions } from 'lavashark/typings/src/@types/index.js';
 /** Number of Lavalink equalizer bands */
 export const EQ_BAND_COUNT = 15;
 
+/** Human readable labels of the Lavalink equalizer bands, ordered by band index */
+export const EQ_BAND_FREQUENCIES: readonly string[] = [
+    '25 Hz',
+    '40 Hz',
+    '63 Hz',
+    '100 Hz',
+    '160 Hz',
+    '250 Hz',
+    '400 Hz',
+    '630 Hz',
+    '1 kHz',
+    '1.6 kHz',
+    '2.5 kHz',
+    '4 kHz',
+    '6.3 kHz',
+    '10 kHz',
+    '16 kHz',
+];
+
 /** Lavalink equalizer gain bounds */
 const EQ_GAIN_MIN = -0.25;
 const EQ_GAIN_MAX = 1.0;

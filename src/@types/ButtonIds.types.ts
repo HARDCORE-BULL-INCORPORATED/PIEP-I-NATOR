@@ -55,6 +55,8 @@ export enum VolumeButtonId {
 export enum SelectButtonId {
     Filter = 'select-filter',
     Music = 'select-music',
+    FilterListCategory = 'select-filter-list-category',
+    FilterListFilter = 'select-filter-list-filter',
 }
 
 /**

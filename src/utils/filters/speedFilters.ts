@@ -11,6 +11,7 @@ export const SPEED_FILTERS: FilterDefinition[] = [
     {
         name: '2xfaster',
         label: '2x Faster',
+        description: 'Doubles the playback speed.',
         aliases: ['2x', 'fast', 'speedup', 'spedup'],
         category: FilterCategory.SPEED,
         options: {
@@ -20,6 +21,7 @@ export const SPEED_FILTERS: FilterDefinition[] = [
     {
         name: 'speed',
         label: 'Speed',
+        description: 'Faster playback with a raised pitch.',
         aliases: ['faster'],
         category: FilterCategory.SPEED,
         options: {
@@ -29,6 +31,7 @@ export const SPEED_FILTERS: FilterDefinition[] = [
     {
         name: 'slow',
         label: 'Slow',
+        description: 'Slows playback to 80%.',
         aliases: ['slowdown'],
         category: FilterCategory.SPEED,
         options: {
@@ -38,6 +41,7 @@ export const SPEED_FILTERS: FilterDefinition[] = [
     {
         name: 'slowed',
         label: 'Slowed',
+        description: 'Slowed down with a slightly lower pitch.',
         aliases: [],
         category: FilterCategory.SPEED,
         options: {
@@ -47,6 +51,7 @@ export const SPEED_FILTERS: FilterDefinition[] = [
     {
         name: 'slowedreverb',
         label: 'Slowed + Reverb',
+        description: 'Slowed and pitched down with a soft reverb-like tail.',
         aliases: ['reverb'],
         category: FilterCategory.SPEED,
         options: {
@@ -59,6 +64,7 @@ export const SPEED_FILTERS: FilterDefinition[] = [
     {
         name: 'nightcore',
         label: 'Nightcore',
+        description: 'Classic nightcore: faster, higher pitched, with sparkle.',
         aliases: ['nc'],
         category: FilterCategory.SPEED,
         options: {
@@ -70,6 +76,7 @@ export const SPEED_FILTERS: FilterDefinition[] = [
     {
         name: 'daycore',
         label: 'Daycore',
+        description: 'Slower, lower-pitched nightcore counterpart.',
         aliases: ['dc'],
         category: FilterCategory.SPEED,
         options: {
@@ -79,6 +86,7 @@ export const SPEED_FILTERS: FilterDefinition[] = [
     {
         name: 'vaporwave',
         label: 'Vaporwave',
+        description: 'Slowed and pitch-bent with a nostalgic haze.',
         aliases: ['vw'],
         category: FilterCategory.SPEED,
         options: {
@@ -90,6 +98,7 @@ export const SPEED_FILTERS: FilterDefinition[] = [
     {
         name: 'chipmunk',
         label: 'Chipmunk',
+        description: 'Fast and very high-pitched chipmunk voice.',
         aliases: ['chip', 'chipmunked'],
         category: FilterCategory.SPEED,
         options: {
@@ -99,6 +108,7 @@ export const SPEED_FILTERS: FilterDefinition[] = [
     {
         name: 'deep',
         label: 'Deep Voice',
+        description: 'Deep voice: lowered pitch and tempo.',
         aliases: ['deepvoice'],
         category: FilterCategory.SPEED,
         options: {
@@ -108,6 +118,7 @@ export const SPEED_FILTERS: FilterDefinition[] = [
     {
         name: 'demon',
         label: 'Demon',
+        description: 'Very low pitch with a slow, dark tone.',
         aliases: ['demonic'],
         category: FilterCategory.SPEED,
         options: {
@@ -118,6 +129,7 @@ export const SPEED_FILTERS: FilterDefinition[] = [
     {
         name: 'darthvader',
         label: 'Darth Vader',
+        description: 'Low-pitched and distorted for a heavy villain voice.',
         aliases: ['vader'],
         category: FilterCategory.SPEED,
         options: {
@@ -129,6 +141,7 @@ export const SPEED_FILTERS: FilterDefinition[] = [
     {
         name: 'hyper',
         label: 'Hyper',
+        description: 'Fast and high with boosted treble.',
         aliases: ['hyperpop'],
         category: FilterCategory.SPEED,
         options: {
@@ -139,6 +152,7 @@ export const SPEED_FILTERS: FilterDefinition[] = [
     {
         name: 'ultraslow',
         label: 'Ultra Slow',
+        description: 'Very slow playback with a lowered pitch.',
         aliases: ['veryslow'],
         category: FilterCategory.SPEED,
         options: {
@@ -148,6 +162,7 @@ export const SPEED_FILTERS: FilterDefinition[] = [
     {
         name: 'ultrafast',
         label: 'Ultra Fast',
+        description: 'Very fast playback with a raised pitch.',
         aliases: ['veryfast'],
         category: FilterCategory.SPEED,
         options: {
@@ -157,6 +172,7 @@ export const SPEED_FILTERS: FilterDefinition[] = [
     {
         name: '3xfaster',
         label: '3x Faster',
+        description: 'Triple playback speed.',
         aliases: ['3x', 'triple'],
         category: FilterCategory.SPEED,
         options: {
@@ -166,6 +182,7 @@ export const SPEED_FILTERS: FilterDefinition[] = [
     {
         name: 'halfspeed',
         label: 'Half Speed',
+        description: 'Half playback speed.',
         aliases: ['half'],
         category: FilterCategory.SPEED,
         options: {
@@ -175,6 +192,7 @@ export const SPEED_FILTERS: FilterDefinition[] = [
     {
         name: 'pitchup',
         label: 'Pitch Up',
+        description: 'Raises pitch without changing tempo.',
         aliases: ['up'],
         category: FilterCategory.SPEED,
         options: {
@@ -184,6 +202,7 @@ export const SPEED_FILTERS: FilterDefinition[] = [
     {
         name: 'pitchdown',
         label: 'Pitch Down',
+        description: 'Lowers pitch without changing tempo.',
         aliases: ['down'],
         category: FilterCategory.SPEED,
         options: {
@@ -193,6 +212,7 @@ export const SPEED_FILTERS: FilterDefinition[] = [
     {
         name: 'helium',
         label: 'Helium',
+        description: 'High-pitched and slightly faster, like inhaling helium.',
         aliases: ['balloon'],
         category: FilterCategory.SPEED,
         options: {
@@ -202,6 +222,7 @@ export const SPEED_FILTERS: FilterDefinition[] = [
     {
         name: 'monster',
         label: 'Monster',
+        description: 'Slow and very low-pitched monster voice.',
         aliases: ['ogre'],
         category: FilterCategory.SPEED,
         options: {
@@ -212,6 +233,7 @@ export const SPEED_FILTERS: FilterDefinition[] = [
     {
         name: 'squirrel',
         label: 'Squirrel',
+        description: 'Extremely fast and squeaky.',
         aliases: ['squeaky'],
         category: FilterCategory.SPEED,
         options: {
@@ -221,6 +243,7 @@ export const SPEED_FILTERS: FilterDefinition[] = [
     {
         name: 'giant',
         label: 'Giant',
+        description: 'Slow and deep, like a giant talking.',
         aliases: ['titan'],
         category: FilterCategory.SPEED,
         options: {
@@ -231,6 +254,7 @@ export const SPEED_FILTERS: FilterDefinition[] = [
     {
         name: 'drunk',
         label: 'Drunk',
+        description: 'Wobbly pitch and volume for a drunken feel.',
         aliases: ['drunkmode'],
         category: FilterCategory.SPEED,
         options: {
@@ -242,6 +266,7 @@ export const SPEED_FILTERS: FilterDefinition[] = [
     {
         name: 'stretch',
         label: 'Time Stretch',
+        description: 'Time-stretched playback with a lower pitch.',
         aliases: ['timestretch'],
         category: FilterCategory.SPEED,
         options: {

@@ -11,6 +11,7 @@ export const EFFECT_FILTERS: FilterDefinition[] = [
     {
         name: 'karaoke',
         label: 'Karaoke',
+        description: 'Removes the vocal band for karaoke singing.',
         aliases: ['singalong'],
         category: FilterCategory.EFFECT,
         options: {
@@ -25,6 +26,7 @@ export const EFFECT_FILTERS: FilterDefinition[] = [
     {
         name: 'lowpass',
         label: 'Low Pass',
+        description: 'Cuts high frequencies for a muffled sound.',
         aliases: [],
         category: FilterCategory.EFFECT,
         options: {
@@ -34,6 +36,7 @@ export const EFFECT_FILTERS: FilterDefinition[] = [
     {
         name: 'soft',
         label: 'Soft',
+        description: 'Gentle EQ with a soft lowpass for easy listening.',
         aliases: ['gentle'],
         category: FilterCategory.EFFECT,
         options: {
@@ -44,6 +47,7 @@ export const EFFECT_FILTERS: FilterDefinition[] = [
     {
         name: '8d',
         label: '8D',
+        description: 'Audio rotates around your head at 0.2 Hz.',
         aliases: [],
         category: FilterCategory.EFFECT,
         options: {
@@ -53,6 +57,7 @@ export const EFFECT_FILTERS: FilterDefinition[] = [
     {
         name: '16d',
         label: '16D',
+        description: 'Faster rotation than 8D for a dizzying effect.',
         aliases: [],
         category: FilterCategory.EFFECT,
         options: {
@@ -62,6 +67,7 @@ export const EFFECT_FILTERS: FilterDefinition[] = [
     {
         name: 'vibrato',
         label: 'Vibrato',
+        description: 'Rapid pitch wobble.',
         aliases: ['vib'],
         category: FilterCategory.EFFECT,
         options: {
@@ -71,6 +77,7 @@ export const EFFECT_FILTERS: FilterDefinition[] = [
     {
         name: 'tremolo',
         label: 'Tremolo',
+        description: 'Rapid volume wobble.',
         aliases: ['trem'],
         category: FilterCategory.EFFECT,
         options: {
@@ -80,6 +87,7 @@ export const EFFECT_FILTERS: FilterDefinition[] = [
     {
         name: 'muffle',
         label: 'Muffled',
+        description: 'Strongly muffled, like behind a wall.',
         aliases: ['muffled'],
         category: FilterCategory.EFFECT,
         options: {
@@ -90,6 +98,7 @@ export const EFFECT_FILTERS: FilterDefinition[] = [
     {
         name: 'radio',
         label: 'Radio',
+        description: 'AM radio: narrow band with distortion.',
         aliases: ['amradio'],
         category: FilterCategory.EFFECT,
         options: {
@@ -101,6 +110,7 @@ export const EFFECT_FILTERS: FilterDefinition[] = [
     {
         name: 'phone',
         label: 'Phone',
+        description: 'Telephone: mono, narrow band and distorted.',
         aliases: ['telephone'],
         category: FilterCategory.EFFECT,
         options: {
@@ -113,6 +123,7 @@ export const EFFECT_FILTERS: FilterDefinition[] = [
     {
         name: 'underwater',
         label: 'Underwater',
+        description: 'Deep lowpass with a slow wobble.',
         aliases: [],
         category: FilterCategory.EFFECT,
         options: {
@@ -123,6 +134,7 @@ export const EFFECT_FILTERS: FilterDefinition[] = [
     {
         name: 'robot',
         label: 'Robot',
+        description: 'Monotone, vibrating and distorted robot voice.',
         aliases: ['robotic'],
         category: FilterCategory.EFFECT,
         options: {
@@ -134,6 +146,7 @@ export const EFFECT_FILTERS: FilterDefinition[] = [
     {
         name: 'alien',
         label: 'Alien',
+        description: 'High-pitched, wobbly alien chatter.',
         aliases: ['extraterrestrial'],
         category: FilterCategory.EFFECT,
         options: {
@@ -145,6 +158,7 @@ export const EFFECT_FILTERS: FilterDefinition[] = [
     {
         name: 'party',
         label: 'Party',
+        description: 'Rotating party mode with bass and tremolo.',
         aliases: ['partymode'],
         category: FilterCategory.EFFECT,
         options: {
@@ -156,6 +170,7 @@ export const EFFECT_FILTERS: FilterDefinition[] = [
     {
         name: 'concert',
         label: 'Concert',
+        description: 'Live concert feel with a light lowpass and rotation.',
         aliases: ['live'],
         category: FilterCategory.EFFECT,
         options: {
@@ -167,6 +182,7 @@ export const EFFECT_FILTERS: FilterDefinition[] = [
     {
         name: 'cave',
         label: 'Cave',
+        description: 'Echoing cave-like lowpass with slow rotation.',
         aliases: [],
         category: FilterCategory.EFFECT,
         options: {
@@ -178,6 +194,7 @@ export const EFFECT_FILTERS: FilterDefinition[] = [
     {
         name: 'hall',
         label: 'Hall',
+        description: 'Large hall ambience with a soft lowpass.',
         aliases: ['hallway'],
         category: FilterCategory.EFFECT,
         options: {
@@ -189,6 +206,7 @@ export const EFFECT_FILTERS: FilterDefinition[] = [
     {
         name: 'stadium',
         label: 'Stadium',
+        description: 'Stadium ambience with wide rotation.',
         aliases: ['arena'],
         category: FilterCategory.EFFECT,
         options: {
@@ -200,6 +218,7 @@ export const EFFECT_FILTERS: FilterDefinition[] = [
     {
         name: 'tunnel',
         label: 'Tunnel',
+        description: 'Tunnel echo with a faster rotation.',
         aliases: ['tunnelvision'],
         category: FilterCategory.EFFECT,
         options: {
@@ -211,6 +230,7 @@ export const EFFECT_FILTERS: FilterDefinition[] = [
     {
         name: 'popcorn',
         label: 'Popcorn',
+        description: 'Fast popping tremolo with raised pitch.',
         aliases: [],
         category: FilterCategory.EFFECT,
         options: {
@@ -221,6 +241,7 @@ export const EFFECT_FILTERS: FilterDefinition[] = [
     {
         name: 'earrape',
         label: 'Earrape',
+        description: 'Maximum loudness and distortion.',
         aliases: ['loud'],
         category: FilterCategory.EFFECT,
         options: {
@@ -231,6 +252,7 @@ export const EFFECT_FILTERS: FilterDefinition[] = [
     {
         name: 'vocal',
         label: 'Vocal Boost',
+        description: 'Boosts the vocal range and cuts the bass.',
         aliases: ['voice', 'vocalboost'],
         category: FilterCategory.EFFECT,
         options: {
@@ -240,6 +262,7 @@ export const EFFECT_FILTERS: FilterDefinition[] = [
     {
         name: 'treble',
         label: 'Treble Boost',
+        description: 'Boosts the highs and cuts the bass.',
         aliases: ['highs', 'trebleboost'],
         category: FilterCategory.EFFECT,
         options: {
@@ -249,6 +272,7 @@ export const EFFECT_FILTERS: FilterDefinition[] = [
     {
         name: 'ghost',
         label: 'Ghost',
+        description: 'Haunted, slow and wobbly with a lowpass.',
         aliases: ['haunted', 'spooky'],
         category: FilterCategory.EFFECT,
         options: {
@@ -260,6 +284,7 @@ export const EFFECT_FILTERS: FilterDefinition[] = [
     {
         name: 'dreamy',
         label: 'Dreamy',
+        description: 'Soft, dreamy haze with slow rotation.',
         aliases: ['dream'],
         category: FilterCategory.EFFECT,
         options: {
