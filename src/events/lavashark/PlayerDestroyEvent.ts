@@ -36,6 +36,9 @@ export class PlayerDestroyEvent extends BaseLavaSharkEvent<'playerDestroy'> {
             client.queuePersistence.stopPeriodicSave(player.guildId);
         }
 
+        // Stop dashboard progress updates before removing the dashboard message
+        client.dashboard.stopProgressUpdates(player.guildId);
+
         // Clear voice channel status
         if (player.voiceChannelId && bot.config.bot.voiceStatusEmojis.length > 0) {
             await setVoiceChannelStatus(bot, client, player.voiceChannelId, null);

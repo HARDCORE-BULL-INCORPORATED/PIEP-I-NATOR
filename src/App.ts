@@ -162,6 +162,9 @@ class App {
                     );
                 }
 
+                // Stop dashboard progress update timers
+                this.#client.dashboard.stopAllProgressUpdates();
+
                 // Close the lavashark players connections
                 this.bot.logger.log( this.bot.shardId, 'Closing voice channel connection...');
                 const activePlayers = Array.from(this.#client.lavashark?.players?.values() ?? []);
