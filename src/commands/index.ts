@@ -36,6 +36,7 @@ import { PlayTopCommand } from './PlayTopCommand.js';
 import { AlimesamiCommand } from './AlimesamiCommand.js';
 import { PlaylistCommand } from './PlaylistCommand.js';
 import { RadioCommand } from './RadioCommand.js';
+import { SlotCommand } from './SlotCommand.js';
 
 import type { CommandRegistry } from './base/CommandRegistry.js';
 import type { Bot } from '../@types/index.js';
@@ -60,6 +61,9 @@ export function registerAllCommands(registry: CommandRegistry, bot: Bot): void {
 
     // Admin commands
     registry.register(new BlacklistCommand(), bot);
+
+    // Game commands
+    registry.register(new SlotCommand(), bot);
 
     // Music commands
     registry.register(new PauseCommand(), bot);

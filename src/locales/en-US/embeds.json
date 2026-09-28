@@ -20,6 +20,7 @@
   "MESSAGE_HELP_DESCRIPTION": "Use `{{prefix}}help <command>` for details about a command.",
   "MESSAGE_HELP_MUSIC": "🎵 Music",
   "MESSAGE_HELP_UTILITY": "🛠️ Utility",
+  "MESSAGE_HELP_GAMES": "🎰 Games",
   "MESSAGE_MOEE_TITLE": "🎧 Listening Stats",
   "MESSAGE_MOEE_SESSION_FIELD": "This session",
   "MESSAGE_MOEE_24H_FIELD": "Last 24 hours",

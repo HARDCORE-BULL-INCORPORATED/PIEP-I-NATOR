@@ -70,3 +70,11 @@ export enum PlaylistButtonId {
     SaveCancel = 'playlist-save-cancel',
     SaveConfirm = 'playlist-save-confirm',
 }
+
+/**
+ * Slot machine control button IDs
+ */
+export enum SlotButtonId {
+    Spin = 'slots-spin',
+    SpinFive = 'slots-spin-five',
+}

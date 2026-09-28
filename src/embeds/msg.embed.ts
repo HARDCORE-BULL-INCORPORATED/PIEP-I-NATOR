@@ -9,6 +9,13 @@ import type { Bot } from '../@types/index.js';
 /** Discord's maximum length for a single embed field value */
 const EMBED_FIELD_VALUE_LIMIT = 1024;
 
+/** i18n keys for the help overview field of each command category */
+const HELP_CATEGORY_KEYS: Record<CommandCategory, string> = {
+    [CommandCategory.MUSIC]: 'embeds:MESSAGE_HELP_MUSIC',
+    [CommandCategory.UTILITY]: 'embeds:MESSAGE_HELP_UTILITY',
+    [CommandCategory.GAMES]: 'embeds:MESSAGE_HELP_GAMES'
+};
+
 
 /**
  * One category of the help overview with its formatted command lines
@@ -41,12 +48,7 @@ const helpList = (
     lng?: string,
 ) => {
     const fields = sections.flatMap((section) => {
-        const label = bot.i18n.t(
-            section.category === CommandCategory.MUSIC
-                ? 'embeds:MESSAGE_HELP_MUSIC'
-                : 'embeds:MESSAGE_HELP_UTILITY',
-            { lng }
-        );
+        const label = bot.i18n.t(HELP_CATEGORY_KEYS[section.category], { lng });
         const chunks = chunkLines(section.lines, EMBED_FIELD_VALUE_LIMIT);
 
         return chunks.map((value, index) => ({
