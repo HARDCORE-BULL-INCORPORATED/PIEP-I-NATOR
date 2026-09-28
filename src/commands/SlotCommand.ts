@@ -1,5 +1,6 @@
 import {
     ActionRowBuilder,
+    AttachmentBuilder,
     ButtonBuilder,
     ButtonStyle
 } from 'discord.js';
@@ -7,25 +8,25 @@ import i18next from 'i18next';
 
 import { BaseCommand } from './base/BaseCommand.js';
 import { CommandCategory, SlotButtonId } from '../@types/index.js';
-import { SlotMachineRenderer } from '../lib/slotmachine/SlotMachineRenderer.js';
+import { SPIN_ATTACHMENT_NAME, SUMMARY_ATTACHMENT_NAME, SlotMachineRenderer } from '../lib/slotmachine/SlotMachineRenderer.js';
+import { SLOT_RARITY_LABEL_KEYS, SLOT_RARITY_ORDER } from '../lib/slotmachine/SlotMachine.types.js';
 import { getAllSlotMachines, getDefaultSlotMachine, getSlotMachine, getSlotMachineChoices } from '../lib/slotmachine/machines/index.js';
 
 import type { ButtonInteraction, Client, Collection, Message } from 'discord.js';
 import type { CommandContext } from './base/CommandContext.js';
 import type SlotMachine from '../lib/slotmachine/SlotMachine.js';
-import type { SpinResult } from '../lib/slotmachine/SlotMachine.types.js';
+import type { SlotItem, SlotRarity, SpinResult } from '../lib/slotmachine/SlotMachine.types.js';
 import type { Bot, CommandMetadata } from '../@types/index.js';
 
 
-const FILLER_FRAME_COUNT = 3;
-const FRAME_DELAYS_MS = [0, 450, 650, 850];
 const SPIN_FIVE_COUNT = 5;
 const COLLECTOR_TIMEOUT_MS = 90_000;
+const RESULT_REVEAL_DELAY_MS = 200;
 
 
 type SlotSession = {
     spins: number;
-    score: number;
+    bestItem: SlotItem | null;
     busy: boolean;
 };
 
@@ -33,7 +34,7 @@ const delay = (ms: number): Promise<void> => new Promise(resolve => setTimeout(r
 
 
 /**
- * Slot machine command - plays a configurable reel machine with buttons
+ * Slot machine command - opens CS:GO style cases with an animated unboxing
  */
 export class SlotCommand extends BaseCommand {
     public getMetadata(_bot: Bot, lng?: string): CommandMetadata {
@@ -75,77 +76,68 @@ export class SlotCommand extends BaseCommand {
         }
 
         const renderer = new SlotMachineRenderer(machine);
-        const session: SlotSession = { spins: 0, score: 0, busy: true };
-        const frames = this.#createFrames(machine);
+        const session: SlotSession = { spins: 0, bestItem: null, busy: true };
 
         const msg = await context.reply({
-            embeds: [renderer.buildSpinEmbed(frames[0], context.t('commands:MESSAGE_SLOT_SPINNING'))],
+            embeds: [renderer.buildLoadingEmbed(context.t('commands:MESSAGE_SLOT_UNBOXING'))],
             components: [this.#buildButtons(context, true)]
         });
 
-        await this.#playSpinSequence(bot, context, msg, renderer, session, frames, 1);
-
+        await this.#openCase(bot, context, msg, renderer, machine, session);
         this.#createCollector(bot, context, msg, renderer, machine, session);
     }
 
     /**
-     * Create the filler frames and the final result
+     * Open one case: render the landing GIF, play it, then reveal the result
      * @private
      */
-    #createFrames(machine: SlotMachine): SpinResult[] {
-        return Array.from({ length: FILLER_FRAME_COUNT + 1 }, () => machine.spin());
-    }
-
-    /**
-     * Animate a spin sequence by editing the message frame by frame
-     * @private
-     */
-    async #playSpinSequence(
+    async #openCase(
         bot: Bot,
         context: CommandContext,
         msg: Message,
         renderer: SlotMachineRenderer,
-        session: SlotSession,
-        frames: SpinResult[],
-        startIndex: number
+        machine: SlotMachine,
+        session: SlotSession
     ): Promise<void> {
         session.busy = true;
 
         try {
-            for (let index = startIndex; index < frames.length; index++) {
-                const isResult = index === frames.length - 1;
+            const result = machine.spin();
+            const gif = await renderer.renderSpinGif(result);
 
-                if (!(index === 0 && startIndex === 0)) {
-                    await delay(FRAME_DELAYS_MS[index] ?? FRAME_DELAYS_MS[FRAME_DELAYS_MS.length - 1]);
-                }
+            await msg.edit({
+                embeds: [renderer.buildSpinEmbed(result, context.t('commands:MESSAGE_SLOT_UNBOXING'))],
+                components: [this.#buildButtons(context, true)],
+                files: [new AttachmentBuilder(gif, { name: SPIN_ATTACHMENT_NAME })],
+                attachments: []
+            });
 
-                if (isResult) {
-                    session.spins += 1;
-                    session.score += frames[index].payout;
-                }
+            await delay(renderer.spinDurationMs + RESULT_REVEAL_DELAY_MS);
 
-                const status = isResult
-                    ? this.#resultText(context, frames[index])
-                    : context.t('commands:MESSAGE_SLOT_SPINNING');
-                const footer = session.spins > 0 ? this.#sessionText(context, session) : undefined;
+            session.spins += 1;
+            session.bestItem = this.#bestItem(session.bestItem, result.item);
 
-                await msg.edit({
-                    embeds: [renderer.buildSpinEmbed(frames[index], status, footer)],
-                    components: [this.#buildButtons(context, !isResult)]
-                });
-            }
+            await msg.edit({
+                embeds: [renderer.buildSpinEmbed(
+                    result,
+                    this.#resultText(context, result),
+                    this.#sessionText(context, session)
+                )],
+                components: [this.#buildButtons(context, false)]
+            });
         } catch (error) {
-            bot.logger.error(bot.shardId, `[slot] Failed to update spin frame: ${error}`);
+            bot.logger.error(bot.shardId, `[slot] Failed to open a case: ${error}`);
+            await this.#setButtons(msg, context, false);
         } finally {
             session.busy = false;
         }
     }
 
     /**
-     * Reveal five spins at once without an animation
+     * Open five cases at once and reveal them as one summary image
      * @private
      */
-    async #showFiveSpins(
+    async #openFiveCases(
         bot: Bot,
         context: CommandContext,
         msg: Message,
@@ -157,12 +149,14 @@ export class SlotCommand extends BaseCommand {
 
         try {
             const results = Array.from({ length: SPIN_FIVE_COUNT }, () => machine.spin());
-            session.spins += SPIN_FIVE_COUNT;
-            session.score += results.reduce((sum, result) => sum + result.payout, 0);
+            const image = await renderer.renderSummaryImage(results);
 
-            const lines = results.map(result =>
-                renderer.renderResultLine(result, context.t('commands:MESSAGE_SLOT_MISS'))
-            );
+            session.spins += SPIN_FIVE_COUNT;
+            for (const result of results) {
+                session.bestItem = this.#bestItem(session.bestItem, result.item);
+            }
+
+            const lines = results.map(result => renderer.renderResultLine(result, this.#rarityLabel(context, result.item.rarity)));
 
             await msg.edit({
                 embeds: [renderer.buildSummaryEmbed(
@@ -170,17 +164,20 @@ export class SlotCommand extends BaseCommand {
                     lines,
                     this.#sessionText(context, session)
                 )],
-                components: [this.#buildButtons(context, false)]
+                components: [this.#buildButtons(context, false)],
+                files: [new AttachmentBuilder(image, { name: SUMMARY_ATTACHMENT_NAME })],
+                attachments: []
             });
         } catch (error) {
-            bot.logger.error(bot.shardId, `[slot] Failed to show five spins: ${error}`);
+            bot.logger.error(bot.shardId, `[slot] Failed to open five cases: ${error}`);
+            await this.#setButtons(msg, context, false);
         } finally {
             session.busy = false;
         }
     }
 
     /**
-     * Attach the button collector that drives repeat spins
+     * Attach the button collector that drives repeat openings
      * @private
      */
     #createCollector(
@@ -203,59 +200,62 @@ export class SlotCommand extends BaseCommand {
             if (session.busy) return;
 
             if (interaction.customId === SlotButtonId.SpinFive) {
-                await this.#showFiveSpins(bot, context, msg, renderer, machine, session);
+                await this.#openFiveCases(bot, context, msg, renderer, machine, session);
                 return;
             }
 
-            await this.#playSpinSequence(bot, context, msg, renderer, session, this.#createFrames(machine), 0);
+            await this.#openCase(bot, context, msg, renderer, machine, session);
         });
 
         collector.on('end', async (_collected: Collection<string, ButtonInteraction>, reason: string) => {
             if (reason !== 'time') return;
-
-            try {
-                await msg.edit({ components: [this.#buildButtons(context, true)] });
-            } catch (_) {
-                // Message was already deleted when the collector expired
-            }
+            await this.#setButtons(msg, context, true);
         });
     }
 
     /**
-     * Build the spin controls, optionally disabled
+     * Build the case opening controls, optionally disabled
      * @private
      */
     #buildButtons(context: CommandContext, disabled: boolean): ActionRowBuilder<ButtonBuilder> {
-        const spinButton = new ButtonBuilder()
+        const openButton = new ButtonBuilder()
             .setCustomId(SlotButtonId.Spin)
             .setLabel(context.t('commands:MESSAGE_SLOT_BUTTON_SPIN'))
-            .setEmoji('🎰')
+            .setEmoji('🎁')
             .setStyle(ButtonStyle.Success)
             .setDisabled(disabled);
 
-        const spinFiveButton = new ButtonBuilder()
+        const openFiveButton = new ButtonBuilder()
             .setCustomId(SlotButtonId.SpinFive)
             .setLabel(context.t('commands:MESSAGE_SLOT_BUTTON_SPIN_FIVE'))
             .setEmoji('🔁')
             .setStyle(ButtonStyle.Secondary)
             .setDisabled(disabled);
 
-        return new ActionRowBuilder<ButtonBuilder>().addComponents(spinButton, spinFiveButton);
+        return new ActionRowBuilder<ButtonBuilder>().addComponents(openButton, openFiveButton);
     }
 
     /**
-     * Format the localized status line for a finished spin
+     * Edit the message controls, ignoring deleted or expired messages
+     * @private
+     */
+    async #setButtons(msg: Message, context: CommandContext, disabled: boolean): Promise<void> {
+        try {
+            await msg.edit({ components: [this.#buildButtons(context, disabled)] });
+        } catch (_) {
+            // Message was already deleted when the buttons were updated
+        }
+    }
+
+    /**
+     * Format the localized status line for a finished unboxing
      * @private
      */
     #resultText(context: CommandContext, result: SpinResult): string {
-        if (result.matched) {
-            return context.t('commands:MESSAGE_SLOT_WIN', {
-                symbol: result.matched.name,
-                payout: result.matched.payout
-            });
-        }
-
-        return context.t('commands:MESSAGE_SLOT_LOSE');
+        return context.t('commands:MESSAGE_SLOT_UNBOXED', {
+            item: result.item.name,
+            rarity: this.#rarityLabel(context, result.item.rarity)
+        });
     }
 
     /**
@@ -265,7 +265,27 @@ export class SlotCommand extends BaseCommand {
     #sessionText(context: CommandContext, session: SlotSession): string {
         return context.t('commands:MESSAGE_SLOT_SESSION', {
             spins: session.spins,
-            score: session.score
+            best: session.bestItem?.name ?? ''
         });
+    }
+
+    /**
+     * Localize one rarity tier
+     * @private
+     */
+    #rarityLabel(context: CommandContext, rarity: SlotRarity): string {
+        return context.t(`commands:${SLOT_RARITY_LABEL_KEYS[rarity]}`);
+    }
+
+    /**
+     * Keep the rarest item pulled during the session
+     * @private
+     */
+    #bestItem(current: SlotItem | null, candidate: SlotItem): SlotItem {
+        if (!current) return candidate;
+
+        return SLOT_RARITY_ORDER.indexOf(candidate.rarity) > SLOT_RARITY_ORDER.indexOf(current.rarity)
+            ? candidate
+            : current;
     }
 }

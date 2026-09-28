@@ -1,24 +1,64 @@
 import { SlotRarity } from '../SlotMachine.types.js';
 
-import type { SlotMachineDefinition } from '../SlotMachine.types.js';
+import type { SlotItem, SlotMachineDefinition } from '../SlotMachine.types.js';
+
+
+const consumerGradeItems: SlotItem[] = [
+    { id: 'smirnoff', name: 'Smirnoff', image: 'smirnoff.jpg', weight: 1, rarity: SlotRarity.CONSUMER }
+];
+
+const industrialGradeItems: SlotItem[] = [
+    { id: 'finlandia', name: 'Finlandia', image: 'finlandia.jpg', weight: 1, rarity: SlotRarity.INDUSTRIAL }
+];
+
+const milSpecItems: SlotItem[] = [
+    { id: 'koskenkorva-38', name: 'Koskenkorva 38%', image: 'koskenkorva-38.jpg', weight: 1, rarity: SlotRarity.MIL_SPEC },
+    { id: 'leijona', name: 'Leijona', image: 'leijona.jpg', weight: 1, rarity: SlotRarity.MIL_SPEC },
+    { id: 'suomi-viina', name: 'Suomi Viina', image: 'suomi-viina.jpg', weight: 1, rarity: SlotRarity.MIL_SPEC },
+    { id: 'saunalahden-viina', name: 'Saunalahden Viina', image: 'saunalahden-viina.jpg', weight: 1, rarity: SlotRarity.MIL_SPEC }
+];
+
+const restrictedItems: SlotItem[] = [
+    { id: 'puolustuslaitos', name: 'Puolustuslaitos', image: 'puolustuslaitos.jpg', weight: 1, rarity: SlotRarity.RESTRICTED },
+    { id: 'koskenkorva-40', name: 'Koskenkorva 40%', image: 'koskenkorva-40.jpg', weight: 1, rarity: SlotRarity.RESTRICTED },
+    { id: 'jallu', name: 'Jallu', image: 'jaloviina.jpg', weight: 1, rarity: SlotRarity.RESTRICTED }
+];
+
+const classifiedItems: SlotItem[] = [
+    { id: 'saaremaa', name: 'Saaremaa', image: 'saaremaa.jpg', weight: 1, rarity: SlotRarity.CLASSIFIED },
+    { id: 'tapio', name: 'Tapio', image: 'tapio-39.jpg', weight: 1, rarity: SlotRarity.CLASSIFIED }
+];
+
+const covertItems: SlotItem[] = [
+    { id: 'dry-vodka', name: 'Dry Vodka', image: 'dry-vodka.jpg', weight: 1, rarity: SlotRarity.COVERT },
+    { id: 'sisuviina', name: 'Sisuviina', image: 'sisuviina.jpg', weight: 1, rarity: SlotRarity.COVERT }
+];
+
+const rareSpecialItems: SlotItem[] = [
+    { id: 'kossu-60', name: 'Koskenkorva 60%', image: 'kossu-60.jpg', weight: 0.5, rarity: SlotRarity.RARE_SPECIAL }
+];
+
+const contrabandItems: SlotItem[] = [
+    { id: '762-viina', name: '762 Viina', image: '762-viina.jpg', weight: 0.08, rarity: SlotRarity.CONTRABAND }
+];
 
 
 /**
- * Viina-themed slot machine built around Finnish booze classics
+ * Viina case built around Finnish booze classics
  */
 export const viinatMachine: SlotMachineDefinition = {
     id: 'viinat',
-    name: 'Viina-Slotti',
-    reels: 3,
-    visibleRows: 3,
+    name: 'Viina-Laatikko',
+    assetDir: 'viinat',
     themeColor: '#e4ae39',
-    symbols: [
-        { id: 'vesi', name: 'Vesi', display: '💧', weight: 40, payout: 1, rarity: SlotRarity.COMMON },
-        { id: 'kossu', name: 'Koskenkorva', display: '🍾', weight: 30, payout: 2, rarity: SlotRarity.COMMON },
-        { id: 'leijona', name: 'Leijona', display: '🦁', weight: 20, payout: 3, rarity: SlotRarity.UNCOMMON },
-        { id: 'jallu', name: 'Jaloviina', display: '🥃', weight: 12, payout: 6, rarity: SlotRarity.RARE },
-        { id: 'sisu', name: 'Sisuviina', display: '💪', weight: 8, payout: 10, rarity: SlotRarity.EPIC },
-        { id: 'kossu60', name: 'Koskenkorva 60%', display: '🔥', weight: 3, payout: 25, rarity: SlotRarity.LEGENDARY },
-        { id: 'viina762', name: '762 Viina', display: '☠️', weight: 1, payout: 100, rarity: SlotRarity.LEGENDARY }
+    items: [
+        ...consumerGradeItems,
+        ...industrialGradeItems,
+        ...milSpecItems,
+        ...restrictedItems,
+        ...classifiedItems,
+        ...covertItems,
+        ...rareSpecialItems,
+        ...contrabandItems
     ]
 };
