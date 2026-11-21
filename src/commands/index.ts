@@ -34,6 +34,8 @@ import { PlayCommand } from './PlayCommand.js';
 import { PlayLastCommand } from './PlayLastCommand.js';
 import { PlayTopCommand } from './PlayTopCommand.js';
 import { AlimesamiCommand } from './AlimesamiCommand.js';
+import { SoundcloudMesamiCommand } from './SoundcloudMesamiCommand.js';
+import { YoutubemesamiCommand } from './YoutubemesamiCommand.js';
 import { PlaylistCommand } from './PlaylistCommand.js';
 import { RadioCommand } from './RadioCommand.js';
 import { SlotCommand } from './SlotCommand.js';
@@ -93,6 +95,8 @@ export function registerAllCommands(registry: CommandRegistry, bot: Bot): void {
     registry.register(new PlayTopCommand(), bot);
     registry.register(new PlayCommand(), bot);
     registry.register(new AlimesamiCommand(), bot);
+    registry.register(new SoundcloudMesamiCommand(), bot);
+    registry.register(new YoutubemesamiCommand(), bot);
     registry.register(new PlaylistCommand(), bot);
     registry.register(new RadioCommand(), bot);
 }
