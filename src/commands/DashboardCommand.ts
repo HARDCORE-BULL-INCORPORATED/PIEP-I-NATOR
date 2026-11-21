@@ -1,32 +1,40 @@
-import i18next from 'i18next';
-import { BaseCommand } from './base/BaseCommand.js';
-import { CommandCategory } from '../@types/index.js';
+import i18next from "i18next";
+import { BaseCommand } from "./base/BaseCommand.js";
+import { CommandCategory } from "../@types/index.js";
 
-import type { Client } from 'discord.js';
-import type { CommandContext } from './base/CommandContext.js';
-import type { Bot, CommandMetadata } from '../@types/index.js';
-
+import type { Client } from "discord.js";
+import type { CommandContext } from "./base/CommandContext.js";
+import type { Bot, CommandMetadata } from "../@types/index.js";
 
 export class DashboardCommand extends BaseCommand {
     public getMetadata(_bot: Bot, lng?: string): CommandMetadata {
         return {
-            name: 'dashboard',
-            aliases: ['db'],
-            description: i18next.t('commands:CONFIG_DASHBOARD_DESCRIPTION', { lng }),
-            usage: i18next.t('commands:CONFIG_DASHBOARD_USAGE', { lng }),
+            name: "dashboard",
+            aliases: ["db", "d"],
+            description: i18next.t("commands:CONFIG_DASHBOARD_DESCRIPTION", {
+                lng,
+            }),
+            usage: i18next.t("commands:CONFIG_DASHBOARD_USAGE", { lng }),
             category: CommandCategory.MUSIC,
             voiceChannel: true,
             showHelp: true,
             sendTyping: false,
-            options: []
+            options: [],
         };
     }
 
-    protected async run(bot: Bot, client: Client, context: CommandContext): Promise<void> {
+    protected async run(
+        bot: Bot,
+        client: Client,
+        context: CommandContext,
+    ): Promise<void> {
         const player = client.lavashark.getPlayer(context.guild!.id);
 
         if (!player || !player.dashboardMsg) {
-            await context.replyEphemeralError(bot, context.t('commands:ERROR_NO_PLAYING'));
+            await context.replyEphemeralError(
+                bot,
+                context.t("commands:ERROR_NO_PLAYING"),
+            );
             return;
         }
 
@@ -34,14 +42,13 @@ export class DashboardCommand extends BaseCommand {
         try {
             await player.dashboardMsg.delete();
         } catch (error) {
-            bot.logger.error( bot.shardId, 'Dashboard delete error:' + error);
+            bot.logger.error(bot.shardId, "Dashboard delete error:" + error);
         }
 
         // Initialize new dashboard
         if (context.isMessage()) {
             await client.dashboard.initialize(context.getMessage(), player);
-        }
-        else {
+        } else {
             await client.dashboard.initialize(context.getInteraction(), player);
         }
 
@@ -51,10 +58,12 @@ export class DashboardCommand extends BaseCommand {
         }
 
         if (context.isMessage()) {
-            await context.react('👍');
-        }
-        else {
-            await context.replySuccess(bot, context.t('commands:MESSAGE_DASHBOARD_SUCCESS'));
+            await context.react("👍");
+        } else {
+            await context.replySuccess(
+                bot,
+                context.t("commands:MESSAGE_DASHBOARD_SUCCESS"),
+            );
         }
     }
 }
