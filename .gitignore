@@ -10,7 +10,8 @@ deploy/data/
 deploy/lavalink/
 
 server/logs/
-server/plugins/
+server/plugins/*
+!server/plugins/soundy-plugin-1.1.1.jar
 server/*.jar
 
 .DS_Store

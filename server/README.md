@@ -29,7 +29,39 @@ YouTube requests will then be handled by the `youtube-source` plugin.
 
 ---
 
-## 2. yt-cipher
+## 2. SoundCloud (soundy-plugin)
+
+SoundCloud now serves fragmented MP4/AAC HLS streams, which Lavalink's built-in
+SoundCloud source cannot decode. [soundy-plugin](https://github.com/lpaiu-cs/soundy-plugin)
+replaces it.
+
+The plugin jar is committed at `server/plugins/soundy-plugin-1.1.1.jar` (MIT,
+SHA-256 `1fd0c2f41f214ffb8b33fe744584b1efbbe14edbd31ef7c4cb73f7fd4df4f5ac`).
+Lavalink loads it from the `plugins` directory automatically. Do not add it to
+`lavalink.plugins`: Soundy is not published to a Maven repository that Lavalink
+can download from.
+
+Disable the built-in source and enable the plugin:
+
+```yaml
+lavalink:
+  server:
+    sources:
+      soundcloud: false
+
+plugins:
+  soundy:
+    enabled: true
+```
+
+Soundy handles tracks, sets/playlists, likes, short links, and `scsearch:`. To
+update it, replace the jar with a newer release from the
+[Releases](https://github.com/lpaiu-cs/soundy-plugin/releases) page and restart
+Lavalink. Keep exactly one `soundy-plugin-*.jar` in `server/plugins`.
+
+---
+
+## 3. yt-cipher
 
 ### application.yml
 
@@ -80,7 +112,7 @@ yt-cipher-token
 
 ---
 
-## 3. YouTube OAuth refreshToken
+## 4. YouTube OAuth refreshToken
 
 Set a `refreshToken`. Without one, YouTube is more likely to classify requests as automated or bot traffic.
 
@@ -110,7 +142,7 @@ Requesting too often could get your account banned. **It’s better to use an id
 
 ---
 
-## 4. Docker ports
+## 5. Docker ports
 
 Format:
 
@@ -161,7 +193,7 @@ Each service must use a unique host port. Docker will fail to start if multiple 
 
 ---
 
-## 5. Start the services
+## 6. Start the services
 
 ```bash
 docker compose pull

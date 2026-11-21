@@ -83,6 +83,10 @@ plugins:
       url: "http://yt-cipher:8001"  # The base URL of your remote cipher server.
       password: "yt-cipher-token"   # The password to authenticate with your remote cipher server.
 
+  # https://github.com/lpaiu-cs/soundy-plugin
+  soundy:
+    enabled: true
+
 lavalink:
   plugins:
     # https://github.com/lavalink-devs/youtube-source
@@ -93,7 +97,7 @@ lavalink:
     sources:
       youtube: false
       bandcamp: true
-      soundcloud: true
+      soundcloud: false # Soundy handles SoundCloud; the built-in source cannot play AAC HLS
       twitch: true
       vimeo: true
       http: true
@@ -118,7 +122,7 @@ lavalink:
     youtubePlaylistLoadLimit: 6 # Number of pages at 100 each
     playerUpdateInterval: 5 # How frequently to send player updates to clients, in seconds
     youtubeSearchEnabled: true
-    soundcloudSearchEnabled: true
+    soundcloudSearchEnabled: false # scsearch is handled by the Soundy plugin
     gc-warnings: true
     #ratelimit:
       #ipBlocks: ["1.0.0.0/8", "..."] # list of ip blocks

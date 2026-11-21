@@ -13,6 +13,8 @@ container registry.
 ~/Music-Disc/              # git clone of this fork
 ├── Dockerfile             # bundles Lavalink (LAVALINK_VERSION)
 ├── config.js              # Bot config (not in git: contains the dashboard credentials)
+├── server/
+│   └── plugins/           # Lavalink plugins (Soundy is committed here)
 └── deploy/
     ├── docker-compose.yml
     ├── .env               # BOT_TOKEN and TZ
@@ -20,7 +22,6 @@ container registry.
     ├── data/              # Bot SQLite database (playlists, queue persistence)
     ├── logs/              # Bot logs
     └── lavalink/
-        ├── plugins/       # Lavalink plugins (downloaded on first start)
         └── logs/          # Lavalink logs
 ```
 
@@ -97,14 +98,40 @@ and the `localNode.downloadLink` version in `config.js` together, then rebuild.
 If the two versions differ, the bot re-downloads the jar on startup instead of
 using the bundled one.
 
+## SoundCloud
+
+The committed `server/plugins/soundy-plugin-1.1.1.jar` replaces Lavalink's
+built-in SoundCloud source.
+
+`deploy/docker-compose.yml` enables Soundy and disables the built-in source with
+environment overrides, so the server's gitignored `application.yml` does not
+need to be edited. The equivalent YAML is:
+
+```yaml
+lavalink:
+  server:
+    sources:
+      soundcloud: false
+
+plugins:
+  soundy:
+    enabled: true
+```
+
+Redeploy with `docker compose up -d --build` so the plugin mount and environment
+overrides take effect.
+
 ## Notes
 
 * `config.js` is gitignored and holds the dashboard credentials. Set a strong
   `bot.webDashboard.user.password`. If you do not want to expose the dashboard,
   remove the `ports` entry and reach it through an SSH tunnel:
   `ssh -L 33333:localhost:33333 <user>@<host>`.
-* The YouTube plugin is downloaded from maven on the first Lavalink start into
-  `lavalink/plugins`; it needs outbound network access.
+* `server/plugins` is mounted into the container. Soundy is committed there;
+  the YouTube plugin is downloaded from Maven on the first Lavalink start and
+  needs outbound network access. `deploy/lavalink/plugins` is no longer used.
+* SoundCloud is handled by the committed soundy-plugin; the built-in source is
+  disabled by the compose environment overrides (and in `server/application.yml`).
 * `plugins.youtube.remoteCipher` points at an external cipher service, so no
   `yt-cipher` container is needed.
 * The container runs as root, so files created in the mounted directories are owned
